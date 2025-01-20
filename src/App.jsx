@@ -9,6 +9,8 @@ import { AboutPage } from './pages/About/index.jsx'
 import { ContactPage } from './pages/Contact/index.jsx'
 import { PricingPage } from './pages/Pricing/index.jsx'
 import PublicLayout from './pages/PublicLayout/index.jsx'
+import ProtectedRoute from './pages/ProtectedRoute/index.jsx'
+import WorkspaceListPage from './pages/WorkspaceListPage/index.jsx'
 
 function App() {
     return (
@@ -24,12 +26,10 @@ function App() {
                     <Route path="/pricing" element={<PricingPage />} />
                     <Route path="/auth" element={<Auth />} />
                 </Route>
-
-                {/*<Route path="/register" element={<Register />} />*/}
-                {/*<Route element={<ProtectedRoute />}>*/}
-                {/*    <Route path="/workspaces" element={<WorkspaceList />} />*/}
-                {/*    <Route path="/workspace/:id" element={<Dashboard />} />*/}
-                {/*</Route>*/}
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/workspaces" element={<WorkspaceListPage />} />
+                    {/*    <Route path="/workspace/:id" element={<Dashboard />} />*/}
+                </Route>
             </Routes>
         </>
     )
