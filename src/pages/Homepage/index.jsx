@@ -1,7 +1,12 @@
 import React from 'react'
 import { Shield, Zap, Globe, Star } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 const HomePage = () => {
+    const navigate = useNavigate()
+    const handleGoToWorkspace = () => {
+        navigate('/workspaces')
+    }
     return (
         <div className="min-h-screen bg-neutral-900 text-white">
             {/* Hero Section */}
@@ -17,7 +22,10 @@ const HomePage = () => {
                         communication.
                     </p>
                     <div className="flex flex-wrap justify-center gap-4">
-                        <button className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg font-medium transition-colors">
+                        <button
+                            className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg font-medium transition-colors"
+                            onClick={handleGoToWorkspace}
+                        >
                             Start Chatting Free
                         </button>
                         <button className="border border-neutral-700 hover:border-neutral-600 px-8 py-4 rounded-lg text-lg font-medium transition-colors">
