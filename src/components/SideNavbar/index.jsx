@@ -4,16 +4,20 @@ import {
     Hash,
     MessageSquare,
     Search,
+    Settings,
     Workflow,
     X,
 } from 'lucide-react'
 import NavigationItem from './NavigationItem/index.jsx'
 import NavigationLink from './NavigationLink/index.jsx'
+import WorkspaceSettingsModal from '../Modals/Workspace/WorkspaceSettingsModal/index.jsx'
 
 const SidebarNavigation = ({
     isMobileMenuOpen,
     setIsMobileMenuOpen,
     menuButtonRef,
+    isWorkspaceSettingsModalOpen,
+    setIsWorkspaceSettingsModalOpen,
 }) => {
     const sidebarRef = useRef(null)
 
@@ -57,6 +61,13 @@ const SidebarNavigation = ({
                 {/* Logo and Close Button */}
                 <div className="px-6 py-4 border-b border-neutral-700 flex items-center justify-between">
                     <h1 className="text-2xl font-bold text-white">ChatVerse</h1>
+                    <button
+                        className=" text-neutral-300 hover:text-white"
+                        onClick={() => setIsWorkspaceSettingsModalOpen(true)}
+                    >
+                        <Settings className="w-6 h-6" />
+                    </button>
+
                     <button
                         className="lg:hidden text-neutral-300 hover:text-white"
                         onClick={() => setIsMobileMenuOpen(false)}

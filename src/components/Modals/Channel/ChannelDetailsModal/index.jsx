@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Settings, UserPlus, X } from 'lucide-react'
+import AddUserToChannelModal from '../AddUserToChannelModal/index.jsx'
 
 const ChannelDetailsModal = ({
     isOpen,
@@ -124,42 +125,10 @@ const ChannelDetailsModal = ({
 
             {/* Add Member Modal */}
             {showAddMember && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-neutral-800 rounded-lg p-6 w-full max-w-md">
-                        <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-xl font-bold text-white">
-                                Add Members
-                            </h2>
-                            <button
-                                onClick={() => setShowAddMember(false)}
-                                className="text-neutral-400 hover:text-white"
-                            >
-                                <X className="w-6 h-6" />
-                            </button>
-                        </div>
-                        <div className="space-y-4">
-                            <input
-                                type="email"
-                                placeholder="Enter email address"
-                                value={newMemberEmail}
-                                onChange={(e) =>
-                                    setNewMemberEmail(e.target.value)
-                                }
-                                className="w-full px-4 py-2 bg-neutral-700 rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            <button
-                                onClick={() => {
-                                    onAddMember(newMemberEmail)
-                                    setNewMemberEmail('')
-                                    setShowAddMember(false)
-                                }}
-                                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                            >
-                                Add Member
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <AddUserToChannelModal
+                    isOpen={showAddMember}
+                    onClose={() => setShowAddMember(false)}
+                />
             )}
         </div>
     )
