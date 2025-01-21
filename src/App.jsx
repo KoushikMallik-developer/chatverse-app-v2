@@ -11,7 +11,7 @@ import { PricingPage } from './pages/Pricing/index.jsx'
 import PublicLayout from './pages/PublicLayout/index.jsx'
 import ProtectedRoute from './pages/ProtectedRoute/index.jsx'
 import WorkspaceListPage from './pages/WorkspaceListPage/index.jsx'
-import ChatArea from "./pages/ChatAreaLayout/index.jsx";
+import ChatArea from './pages/ChatAreaLayout/index.jsx'
 
 function App() {
     return (

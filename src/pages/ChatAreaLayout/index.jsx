@@ -1,19 +1,20 @@
-import React, {useState} from 'react'
-import SidebarNavigation from "../../components/SideNavbar/index.jsx";
-import WorkspaceDashboard from "../../components/Workspaces/WorkspaceDashboard/index.jsx";
+import React, { useState } from 'react'
+import SidebarNavigation from '../../components/SideNavbar/index.jsx'
+import WorkspaceDashboard from '../../components/Workspaces/WorkspaceDashboard/index.jsx'
 
 const ChatArea = () => {
-    const [currentChannel, setCurrentChannel] = useState(null);
+    const [currentChannel, setCurrentChannel] = useState(null)
     return (
         <div className="flex">
-        <SidebarNavigation/>
+            <SidebarNavigation />
             <div className="flex-1">
-                {currentChannel ?
+                {currentChannel ? (
                     <h1>currentChannel</h1>
-                :
-                        <WorkspaceDashboard/>}
+                ) : (
+                    <WorkspaceDashboard />
+                )}
             </div>
-            </div>
+        </div>
     )
 }
 export default ChatArea
