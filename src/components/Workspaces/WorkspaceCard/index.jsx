@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import {useNavigate} from "react-router-dom";
 
 const WorkspaceCard = ({
     name,
@@ -10,6 +11,11 @@ const WorkspaceCard = ({
     onDelete,
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const navigate = useNavigate();
+
+    const handleGoToWorkspace = (name) => {
+        navigate(`/workspace/${name}`);
+    }
 
     const handleClickOutside = () => {
         setIsMenuOpen(false)
@@ -61,7 +67,8 @@ const WorkspaceCard = ({
                 </div>
             </div>
             <div className="mt-6 flex space-x-2">
-                <button className="flex-1 px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600 transition-colors">
+                <button className="flex-1 px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600 transition-colors"
+                    onClick={ () => {handleGoToWorkspace(name)}}>
                     Open
                 </button>
                 <div className="relative">
