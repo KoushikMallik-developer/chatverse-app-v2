@@ -12,6 +12,7 @@ import PublicLayout from './pages/PublicLayout/index.jsx'
 import ProtectedRoute from './pages/ProtectedRoute/index.jsx'
 import WorkspaceListPage from './pages/WorkspaceListPage/index.jsx'
 import ChatArea from './pages/ChatAreaLayout/index.jsx'
+import Profile from './pages/Profile/index.jsx'
 
 function App() {
     return (
@@ -30,6 +31,10 @@ function App() {
                 <Route element={<ProtectedRoute />}>
                     <Route path="/workspaces" element={<WorkspaceListPage />} />
                     <Route path="/workspace/:id" element={<ChatArea />} />
+                    <Route element={<PublicLayout />}>
+                        <Route path="/profile" element={<Profile />} />
+                    </Route>
+
                     {/*    <Route path="/workspace/:id" element={<Dashboard />} />*/}
                 </Route>
             </Routes>

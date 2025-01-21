@@ -74,38 +74,50 @@ const Message = ({ user, time, content, reactions, images }) => {
                         ))}
                     </div>
                 )}
-                <div className="mt-2 flex items-center space-x-4">
-                    <div className="relative">
-                        <button
-                            onClick={() =>
-                                setShowReactionPicker(!showReactionPicker)
-                            }
-                            className="text-neutral-400 hover:text-white text-sm flex items-center space-x-1"
+                <div className="mt-2 relative flex items-center space-x-4">
+                    <button
+                        onClick={() =>
+                            setShowReactionPicker(!showReactionPicker)
+                        }
+                        className="text-neutral-400 hover:text-white text-sm flex items-center space-x-1"
+                    >
+                        <SmilePlus className="w-4 h-4" />
+                        <span className="hidden sm:inline">Add reaction</span>
+                    </button>
+                    <button className="text-neutral-400 hover:text-white text-sm flex items-center space-x-1">
+                        <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
                         >
-                            <SmilePlus className="w-4 h-4" />
-                            <span className="hidden sm:inline">
-                                Add reaction
-                            </span>
-                        </button>
-                        {showReactionPicker && (
-                            <div className="absolute bottom-full left-0 mb-2 bg-neutral-800 rounded-lg p-2 shadow-lg">
-                                <div className="flex gap-2">
-                                    {reactionsList.map((emoji) => (
-                                        <button
-                                            key={emoji}
-                                            onClick={() => {
-                                                // Handle reaction
-                                                setShowReactionPicker(false)
-                                            }}
-                                            className="hover:bg-neutral-700 p-1 rounded"
-                                        >
-                                            {emoji}
-                                        </button>
-                                    ))}
-                                </div>
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
+                            />
+                        </svg>
+                        <span>Reply</span>
+                    </button>
+                    {showReactionPicker && (
+                        <div className="absolute bottom-full left-0 mb-2 bg-neutral-800 rounded-lg p-2 shadow-lg">
+                            <div className="flex gap-2">
+                                {reactionsList.map((emoji) => (
+                                    <button
+                                        key={emoji}
+                                        onClick={() => {
+                                            // Handle reaction
+                                            setShowReactionPicker(false)
+                                        }}
+                                        className="hover:bg-neutral-700 p-1 rounded"
+                                    >
+                                        {emoji}
+                                    </button>
+                                ))}
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

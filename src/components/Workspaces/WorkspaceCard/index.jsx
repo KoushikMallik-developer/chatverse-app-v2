@@ -100,7 +100,7 @@ const WorkspaceCard = ({
                                 className="fixed inset-0 z-10"
                                 onClick={handleClickOutside}
                             />
-                            <div className="absolute right-0 mt-2 w-48 bg-neutral-800 rounded-lg shadow-lg border border-neutral-700 z-20">
+                            <div className="absolute sm:bottom-full right-0 mt-2 w-52 bg-neutral-800 rounded-lg shadow-lg border border-neutral-700 z-20">
                                 <button
                                     onClick={() => {
                                         onEdit()
