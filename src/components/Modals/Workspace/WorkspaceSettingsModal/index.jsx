@@ -103,7 +103,7 @@ const WorkspaceSettingsModal = ({
 
     return (
         <>
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center p-0 sm:p-4 overflow-y-auto">
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center p-0 sm:p-4 overflow-y-auto z-50">
                 <div className="bg-neutral-800 rounded-none sm:rounded-lg w-full sm:max-w-2xl border-0 sm:border border-neutral-700 min-h-screen sm:min-h-0 sm:max-h-[90vh] flex flex-col my-0 sm:my-4">
                     {/* Header */}
                     <div className="sticky top-0 z-10 bg-neutral-800 flex justify-between items-center p-4 sm:p-6 border-b border-neutral-700">

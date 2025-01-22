@@ -50,16 +50,18 @@ const WorkspaceListPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-neutral-900 flex flex-col">
-            <header className="bg-neutral-800 border-b border-neutral-700 py-4 px-6">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-bold text-white">Workspaces</h1>
+        <div className="max-w-7xl mx-auto">
+            <div className="min-h-screen bg-neutral-900 flex flex-col">
+                <div className="flex justify-between items-center px-6 pt-6 space-x-4">
+                    <h2 className="text-white text-xl font-semibold ">
+                        Workspaces
+                    </h2>
                     <button
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-between "
                     >
                         <svg
-                            className="w-5 h-5"
+                            className="w-4 h-4"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -71,39 +73,38 @@ const WorkspaceListPage = () => {
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                             />
                         </svg>
-                        <span>New Workspace</span>
+                        <span className="ml-0">New Workspace</span>
                     </button>
                 </div>
-            </header>
-
-            <div className="flex-1 p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {workspaces.map((workspace, index) => (
-                        <WorkspaceCard
-                            key={index}
-                            {...workspace}
-                            onEdit={() => handleEdit(workspace)}
-                            onDelete={() => handleDelete(workspace)}
-                        />
-                    ))}
+                <div className="flex-1 p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {workspaces.map((workspace, index) => (
+                            <WorkspaceCard
+                                key={index}
+                                {...workspace}
+                                onEdit={() => handleEdit(workspace)}
+                                onDelete={() => handleDelete(workspace)}
+                            />
+                        ))}
+                    </div>
                 </div>
-            </div>
 
-            <CreateWorkspaceModal
-                isOpen={isCreateModalOpen}
-                onClose={() => setIsCreateModalOpen(false)}
-            />
-            <EditWorkspaceModal
-                isOpen={isEditModalOpen}
-                onClose={() => setIsEditModalOpen(false)}
-                workspace={selectedWorkspace}
-                onSave={saveWorkspace}
-            />
-            <DeleteWorkspaceModal
-                isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
-                onDelete={deleteWorkspace}
-            />
+                <CreateWorkspaceModal
+                    isOpen={isCreateModalOpen}
+                    onClose={() => setIsCreateModalOpen(false)}
+                />
+                <EditWorkspaceModal
+                    isOpen={isEditModalOpen}
+                    onClose={() => setIsEditModalOpen(false)}
+                    workspace={selectedWorkspace}
+                    onSave={saveWorkspace}
+                />
+                <DeleteWorkspaceModal
+                    isOpen={isDeleteModalOpen}
+                    onClose={() => setIsDeleteModalOpen(false)}
+                    onDelete={deleteWorkspace}
+                />
+            </div>
         </div>
     )
 }

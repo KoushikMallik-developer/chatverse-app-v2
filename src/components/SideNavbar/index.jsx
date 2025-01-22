@@ -7,9 +7,11 @@ import {
     Settings,
     Workflow,
     X,
+    ArrowLeft,
 } from 'lucide-react'
 import NavigationItem from './NavigationItem/index.jsx'
 import NavigationLink from './NavigationLink/index.jsx'
+import { Link } from 'react-router-dom'
 import WorkspaceSettingsModal from '../Modals/Workspace/WorkspaceSettingsModal/index.jsx'
 
 const SidebarNavigation = ({
@@ -53,31 +55,47 @@ const SidebarNavigation = ({
             ref={sidebarRef}
             className={`
           h-screen w-64 bg-neutral-800 fixed lg:relative border-r border-neutral-700
-          transition-transform duration-300 ease-in-out z-40
+          transition-transform duration-300 ease-in-out z-20
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
         >
             <div className="flex flex-col h-full">
                 {/* Logo and Close Button */}
                 <div className="px-6 py-4 border-b border-neutral-700 flex items-center justify-between">
-                    <h1 className="text-2xl font-bold text-white">ChatVerse</h1>
-                    <button
-                        className=" text-neutral-300 hover:text-white"
-                        onClick={() => setIsWorkspaceSettingsModalOpen(true)}
-                    >
-                        <Settings className="w-6 h-6" />
-                    </button>
+                    <div className="flex items-center space-x-1">
+                        <Link
+                            to="/workspaces"
+                            className="text-neutral-300 hover:text-white flex items-center"
+                        >
+                            <span>
+                                <ArrowLeft className="w-5 h-5" />
+                            </span>
+                        </Link>
+                        <h1 className="md:text-2xl sm:text-xl font-bold text-white">
+                            Splitzy Team
+                        </h1>
+                    </div>
+                    <div className="space-x-2 flex items-center">
+                        <button
+                            className=" text-neutral-300 hover:text-white"
+                            onClick={() =>
+                                setIsWorkspaceSettingsModalOpen(true)
+                            }
+                        >
+                            <Settings className="w-5 h-5" />
+                        </button>
 
-                    <button
-                        className="lg:hidden text-neutral-300 hover:text-white"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                        <X className="w-6 h-6" />
-                    </button>
+                        <button
+                            className="lg:hidden text-neutral-300 hover:text-white"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Navigation Links */}
-                <div className="flex-1 px-4 py-6 space-y-2 overflow-y-auto scrollbar-hide">
+                <div className="flex-1 px-4 py-6 space-y-3 overflow-y-auto scrollbar-hide">
                     {/* Workspaces */}
                     <NavigationItem icon={Workflow} label="Workspaces">
                         <NavigationLink href="#">Workspace 1</NavigationLink>

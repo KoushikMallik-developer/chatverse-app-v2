@@ -29,10 +29,13 @@ function App() {
                     <Route path="/auth" element={<Auth />} />
                 </Route>
                 <Route element={<ProtectedRoute />}>
-                    <Route path="/workspaces" element={<WorkspaceListPage />} />
                     <Route path="/workspace/:id" element={<ChatArea />} />
                     <Route element={<PublicLayout />}>
                         <Route path="/profile" element={<Profile />} />
+                        <Route
+                            path="/workspaces"
+                            element={<WorkspaceListPage />}
+                        />
                     </Route>
 
                     {/*    <Route path="/workspace/:id" element={<Dashboard />} />*/}

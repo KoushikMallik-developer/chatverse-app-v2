@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { ArrowLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const Profile = () => {
     const [notifications, setNotifications] = useState({
@@ -17,6 +19,13 @@ const Profile = () => {
     return (
         <div className="min-h-screen bg-neutral-900">
             <div className="max-w-4xl mx-auto p-4 sm:p-6">
+                <Link
+                    to="/workspaces"
+                    className="text-neutral-300 hover:text-white flex items-center space-x-1 mb-5"
+                >
+                    <ArrowLeft className="w-6 h-6" />
+                    <span> Back To Workspaces</span>
+                </Link>
                 {/* Profile Header */}
                 <div className="mb-8">
                     <h1 className="text-2xl font-bold text-white mb-2">

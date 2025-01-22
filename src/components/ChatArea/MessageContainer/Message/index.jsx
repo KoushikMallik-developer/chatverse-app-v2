@@ -3,7 +3,7 @@ import { SmilePlus } from 'lucide-react'
 
 const Message = ({ user, time, content, reactions, images }) => {
     const [showReactionPicker, setShowReactionPicker] = useState(false)
-    const reactionsList = ['👍', '❤️', '😊', '🎉', '👋', '🚀', '👏', '🔥']
+    const reactionsList = ['👍', '❤️', '😊', '🎉', '🚀', '👏', '🔥']
 
     const renderFormattedContent = (text) => {
         // Replace markdown-style formatting with HTML

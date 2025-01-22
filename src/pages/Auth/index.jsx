@@ -63,7 +63,6 @@ const Auth = () => {
 
     return (
         <div>
-            <Header />
             <div className="min-h-screen w-full bg-neutral-900 flex items-center justify-center p-4">
                 <div className="max-w-md w-full space-y-8 bg-neutral-800 p-8 rounded-lg border border-neutral-700">
                     {['login', 'register'].includes(currentForm) &&

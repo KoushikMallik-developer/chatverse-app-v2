@@ -18,7 +18,11 @@ const DMChatArea = ({
 
     return (
         <div className="h-screen bg-neutral-900 flex flex-col">
-            <DMChatHeader />
+            <DMChatHeader
+                isMobileMenuOpen={isMobileMenuOpen}
+                setIsMobileMenuOpen={setIsMobileMenuOpen}
+                menuButtonRef={menuButtonRef}
+            />
             <MessageContainer />
             <MessageInput />
         </div>
