@@ -17,8 +17,18 @@ import Profile from './pages/Profile/index.jsx'
 function App() {
     return (
         <>
-            <Toaster position="top-right" reverseOrder={false} />
-            {/*<Navbar />*/}
+            <Toaster
+                position="top-center"
+                reverseOrder={true}
+                toastOptions={{
+                    style: {
+                        borderRadius: '10px',
+                        background: '#333',
+                        color: '#fff',
+                        padding: '10px',
+                    },
+                }}
+            />
             <Routes>
                 <Route element={<PublicLayout />}>
                     <Route path="/" element={<HomePage />} />
@@ -37,8 +47,6 @@ function App() {
                             element={<WorkspaceListPage />}
                         />
                     </Route>
-
-                    {/*    <Route path="/workspace/:id" element={<Dashboard />} />*/}
                 </Route>
             </Routes>
         </>

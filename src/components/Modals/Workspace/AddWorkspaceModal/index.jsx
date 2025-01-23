@@ -33,7 +33,7 @@ const CreateWorkspaceModal = ({ isOpen, onClose }) => {
                 <h2 className="text-xl font-bold text-white mb-6">
                     Create New Workspace
                 </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-neutral-300 mb-2">
                             Workspace Name

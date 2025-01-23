@@ -1,11 +1,11 @@
 import React from 'react'
 
-const ChangePasswordForm = ({ setCurrentForm }) => {
+const ChangePasswordForm = () => {
     const handleSubmit = () => {
         console.log('Form Submitted')
     }
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form className="space-y-6">
             <div className="text-center mb-6">
                 <h2 className="text-xl font-semibold text-white mb-2">
                     Change Password

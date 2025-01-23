@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import Register from '../../components/Auth/Register/index.jsx'
 import Login from '../../components/Auth/Login/index.jsx'
 import VerifyOTPForm from '../../components/Auth/VerifyOTPForm/index.jsx'
@@ -6,48 +6,49 @@ import ForgetPasswordForm from '../../components/Auth/ForgetPasswordForm/index.j
 import ChangePasswordForm from '../../components/Auth/ChangePasswordForm/index.jsx'
 import AuthToggle from '../../components/Auth/AuthToggle/index.jsx'
 import BackButton from '../../components/Auth/BackButton/index.jsx'
-import Header from '../../components/Header/index.jsx'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCurrentAuthForm } from '../../store/slices/authSlice.js'
+import { useNavigate } from 'react-router-dom'
 
 const Auth = () => {
-    const [currentForm, setCurrentForm] = useState('login')
-
-    const renderBackButton = () => (
-        <BackButton setCurrentForm={setCurrentForm} />
+    const { currentAuthForm, status_code, token, isLoggedIn } = useSelector(
+        (state) => state.auth
     )
 
-    const renderAuthToggle = () => (
-        <AuthToggle currentForm={currentForm} setCurrentForm={setCurrentForm} />
-    )
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-    const renderLoginForm = () => <Login setCurrentForm={setCurrentForm} />
+    const renderBackButton = () => <BackButton />
 
-    const renderRegisterForm = () => (
-        <Register setCurrentForm={setCurrentForm} />
-    )
+    const renderAuthToggle = () => <AuthToggle />
+
+    const renderLoginForm = () => <Login />
+
+    const renderRegisterForm = () => <Register />
 
     const renderVerifyOtpForm = () => (
         <>
             {renderBackButton()}
-            <VerifyOTPForm setCurrentForm={setCurrentForm} />
+            <VerifyOTPForm />
         </>
     )
 
     const renderForgotPasswordForm = () => (
         <>
             {renderBackButton()}
-            <ForgetPasswordForm setCurrentForm={setCurrentForm} />
+            <ForgetPasswordForm />
         </>
     )
 
     const renderChangePasswordForm = () => (
         <>
             {renderBackButton()}
-            <ChangePasswordForm setCurrentForm={setCurrentForm} />
+            <ChangePasswordForm />
         </>
     )
 
     const renderCurrentForm = () => {
-        switch (currentForm) {
+        switch (currentAuthForm) {
             case 'register':
                 return renderRegisterForm()
             case 'verifyOtp':
@@ -61,11 +62,20 @@ const Auth = () => {
         }
     }
 
+    useEffect(() => {
+        if (isLoggedIn && token) {
+            navigate('/workspaces')
+        }
+        if (status_code === 201) {
+            dispatch(setCurrentAuthForm('verifyOtp'))
+        }
+    }, [status_code, token, isLoggedIn])
+
     return (
         <div>
             <div className="min-h-screen w-full bg-neutral-900 flex items-center justify-center p-4">
                 <div className="max-w-md w-full space-y-8 bg-neutral-800 p-8 rounded-lg border border-neutral-700">
-                    {['login', 'register'].includes(currentForm) &&
+                    {['login', 'register'].includes(currentAuthForm) &&
                         renderAuthToggle()}
                     {renderCurrentForm()}
                 </div>

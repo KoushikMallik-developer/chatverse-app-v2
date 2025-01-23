@@ -1,17 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react'
+import {
+    arePasswordsMatching,
+    isValidEmail,
+    isValidName,
+} from '../../../utils/helpers.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { registerUser } from '../../../store/slices/authSlice.js'
 
-const Register = ({ setCurrentForm }) => {
+const Register = () => {
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [agreeTerms, setAgreeTerms] = useState(false)
+
+    const { isLoading, status_code } = useSelector((state) => state.auth)
+
+    const dispatch = useDispatch()
+
     const handleSubmit = () => {
-        console.log('Form Submitted')
+        if (
+            isValidName(name) &&
+            isValidEmail(email) &&
+            arePasswordsMatching(password, confirmPassword)
+        ) {
+            dispatch(
+                registerUser({
+                    name: name,
+                    email: email,
+                    password: password,
+                })
+            )
+        }
     }
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form className="space-y-6">
             <div className="space-y-2">
                 <input
                     type="text"
                     required
                     className="w-full px-4 py-2 rounded-lg bg-neutral-700 border border-neutral-600 text-white focus:outline-none focus:border-blue-500 transition-colors"
                     placeholder="Full Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                 />
             </div>
 
@@ -21,6 +52,8 @@ const Register = ({ setCurrentForm }) => {
                     required
                     className="w-full px-4 py-2 rounded-lg bg-neutral-700 border border-neutral-600 text-white focus:outline-none focus:border-blue-500 transition-colors"
                     placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                 />
             </div>
 
@@ -30,6 +63,8 @@ const Register = ({ setCurrentForm }) => {
                     required
                     className="w-full px-4 py-2 rounded-lg bg-neutral-700 border border-neutral-600 text-white focus:outline-none focus:border-blue-500 transition-colors"
                     placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
 
@@ -39,6 +74,8 @@ const Register = ({ setCurrentForm }) => {
                     required
                     className="w-full px-4 py-2 rounded-lg bg-neutral-700 border border-neutral-600 text-white focus:outline-none focus:border-blue-500 transition-colors"
                     placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                 />
             </div>
 
@@ -48,6 +85,8 @@ const Register = ({ setCurrentForm }) => {
                     id="terms"
                     required
                     className="h-4 w-4 rounded bg-neutral-700 border-neutral-600 text-blue-500 focus:ring-blue-500"
+                    checked={agreeTerms}
+                    onChange={(e) => setAgreeTerms(e.target.checked)}
                 />
                 <label
                     htmlFor="terms"
@@ -58,8 +97,10 @@ const Register = ({ setCurrentForm }) => {
             </div>
 
             <button
-                type="submit"
+                type="button"
                 className="w-full py-3 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                onClick={handleSubmit}
+                disabled={!agreeTerms}
             >
                 Create Account
             </button>

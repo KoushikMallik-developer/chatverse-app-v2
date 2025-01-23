@@ -11,7 +11,7 @@ import AddUserWorkspaceModal from '../../components/Modals/Workspace/AddUserToWo
 const ChatArea = () => {
     const navigate = useNavigate()
     const [currentChannel, setCurrentChannel] = useState({
-        type: 'dm',
+        type: 'public',
     })
     // const currentChannel = null
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)

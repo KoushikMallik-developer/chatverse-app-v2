@@ -1,8 +1,11 @@
 import React from 'react'
+import { setCurrentAuthForm } from '../../../store/slices/authSlice.js'
+import { useDispatch } from 'react-redux'
 
-const BackButton = ({ setCurrentForm }) => {
+const BackButton = () => {
+    const dispatch = useDispatch()
     const handleBack = () => {
-        setCurrentForm('login')
+        dispatch(setCurrentAuthForm('login'))
     }
     return (
         <button

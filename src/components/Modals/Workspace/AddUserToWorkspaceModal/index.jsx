@@ -35,7 +35,7 @@ const AddUserWorkspaceModal = ({ isOpen, onClose }) => {
                         </svg>
                     </button>
                 </div>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form className="space-y-4">
                     <input
                         type="email"
                         value={email}

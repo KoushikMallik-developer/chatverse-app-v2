@@ -1,16 +1,26 @@
 import React, { useState } from 'react'
 import { MessageCircle, Menu, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../../store/slices/authSlice.js'
 
 const Header = () => {
+    const { isLoggedIn } = useSelector((state) => state.auth)
+
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+    const dispatch = useDispatch()
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen)
-        console.log('Menu Toggled', isMenuOpen)
     }
     const closeMenu = () => {
         setIsMenuOpen(false)
+    }
+
+    const handleLogout = () => {
+        dispatch(logout())
+        closeMenu()
     }
 
     return (
@@ -21,7 +31,7 @@ const Header = () => {
                         <MessageCircle className="h-8 w-8 text-blue-500" />
                         <Link to="/">
                             <span className="ml-2 text-xl font-bold">
-                                ChatVerse
+                                {import.meta.env.VITE_APP_NAME}
                             </span>
                         </Link>
                     </div>
@@ -50,12 +60,22 @@ const Header = () => {
                         >
                             Contact Us
                         </Link>
-                        <Link
-                            to="/auth"
-                            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors"
-                        >
-                            Login
-                        </Link>
+                        {isLoggedIn ? (
+                            <button
+                                onClick={handleLogout}
+                                className="block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <Link
+                                to="/auth"
+                                onClick={closeMenu}
+                                className="block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                            >
+                                Login
+                            </Link>
+                        )}
                     </div>
                     <div className="md:hidden flex items-center">
                         <button
@@ -101,13 +121,22 @@ const Header = () => {
                     >
                         Contact Us
                     </Link>
-                    <Link
-                        to="/auth"
-                        onClick={closeMenu}
-                        className="block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
-                    >
-                        Login
-                    </Link>
+                    {isLoggedIn ? (
+                        <button
+                            onClick={handleLogout}
+                            className="block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                        >
+                            Logout
+                        </button>
+                    ) : (
+                        <Link
+                            to="/auth"
+                            onClick={closeMenu}
+                            className="block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                        >
+                            Login
+                        </Link>
+                    )}
                 </div>
             )}
         </nav>

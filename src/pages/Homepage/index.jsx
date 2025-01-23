@@ -193,7 +193,10 @@ const HomePage = () => {
                         today.
                     </p>
                     <div className="flex flex-wrap justify-center gap-4">
-                        <button className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg font-medium transition-colors">
+                        <button
+                            className="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-lg text-lg font-medium transition-colors"
+                            onClick={handleGoToWorkspace}
+                        >
                             Create Free Account
                         </button>
                         <button className="border border-neutral-700 hover:border-neutral-600 px-8 py-4 rounded-lg text-lg font-medium transition-colors">
