@@ -1,15 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const WorkspaceCard = ({
-    name,
-    acronym,
-    members,
-    channels,
-    messages,
-    onEdit,
-    onDelete,
-}) => {
+const WorkspaceCard = ({ workspace, onEdit, onDelete }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const navigate = useNavigate()
 
@@ -25,11 +17,17 @@ const WorkspaceCard = ({
         <div className="bg-neutral-800 rounded-lg border border-neutral-700 p-6 hover:border-neutral-600 transition-colors">
             <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 bg-neutral-700 rounded-lg flex items-center justify-center text-2xl font-bold text-white">
-                    {acronym}
+                    {workspace.name.split(' ').length > 1
+                        ? `${workspace.name.split(' ')[0].charAt(0).toUpperCase()} ${workspace.name.split(' ')[1].charAt(0).toUpperCase()}`
+                        : workspace.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1">
-                    <h3 className="text-lg font-medium text-white">{name}</h3>
-                    <p className="text-neutral-400">{members} members</p>
+                    <h3 className="text-lg font-medium text-white">
+                        {workspace.name}
+                    </h3>
+                    <p className="text-neutral-400">
+                        {workspace?.members.length} members
+                    </p>
                 </div>
             </div>
             <div className="mt-4 space-y-2">
@@ -47,7 +45,7 @@ const WorkspaceCard = ({
                             d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
                         />
                     </svg>
-                    <span>{channels} channels</span>
+                    <span>{workspace?.channels?.length} channels</span>
                 </div>
                 <div className="flex items-center text-neutral-300">
                     <svg
@@ -63,14 +61,14 @@ const WorkspaceCard = ({
                             d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                         />
                     </svg>
-                    <span>{messages} messages today</span>
+                    <span>100 messages today</span>
                 </div>
             </div>
             <div className="mt-6 flex space-x-2">
                 <button
                     className="flex-1 px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600 transition-colors"
                     onClick={() => {
-                        handleGoToWorkspace(name)
+                        handleGoToWorkspace(workspace.name)
                     }}
                 >
                     Open

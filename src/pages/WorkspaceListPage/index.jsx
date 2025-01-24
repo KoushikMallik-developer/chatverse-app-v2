@@ -1,53 +1,40 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import EditWorkspaceModal from '../../components/Modals/Workspace/EditWorkspaceModal/index.jsx'
 import DeleteWorkspaceModal from '../../components/Modals/Workspace/DeleteWorkspaceModal/index.jsx'
 import CreateWorkspaceModal from '../../components/Modals/Workspace/AddWorkspaceModal/index.jsx'
 import WorkspaceCard from '../../components/Workspaces/WorkspaceCard/index.jsx'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserDetails } from '../../store/slices/authSlice.js'
+import {
+    fetchWorkspaces,
+    setActiveWorkspace,
+} from '../../store/slices/workspaceSlice.js'
 
 const WorkspaceListPage = () => {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
-    const workspaces = [
-        {
-            name: 'Tech Company',
-            acronym: 'TC',
-            members: 25,
-            channels: 12,
-            messages: 156,
-        },
-        {
-            name: 'Design Studio',
-            acronym: 'DS',
-            members: 18,
-            channels: 8,
-            messages: 89,
-        },
-    ]
+    const { token } = useSelector((state) => state.auth)
+    const { workspaces } = useSelector((state) => state.workspace)
 
-    const [selectedWorkspace, setSelectedWorkspace] = useState(workspaces[0])
+    const dispatch = useDispatch()
 
     const handleEdit = (workspace) => {
-        setSelectedWorkspace(workspace)
+        console.log(workspace.name)
+        dispatch(setActiveWorkspace(workspace))
         setIsEditModalOpen(true)
     }
 
     const handleDelete = (workspace) => {
-        setSelectedWorkspace(workspace)
+        dispatch(setActiveWorkspace(workspace))
         setIsDeleteModalOpen(true)
     }
 
-    const saveWorkspace = (updatedWorkspace) => {
-        // Save the updated workspace
-        console.log('Workspace updated:', updatedWorkspace)
-    }
-
-    const deleteWorkspace = () => {
-        // Delete the selected workspace
-        console.log('Workspace deleted:', selectedWorkspace)
-        setIsDeleteModalOpen(false)
-    }
+    useEffect(() => {
+        dispatch(getUserDetails())
+        dispatch(fetchWorkspaces())
+    }, [token, dispatch])
 
     return (
         <div className="max-w-7xl mx-auto">
@@ -81,7 +68,7 @@ const WorkspaceListPage = () => {
                         {workspaces.map((workspace, index) => (
                             <WorkspaceCard
                                 key={index}
-                                {...workspace}
+                                workspace={workspace}
                                 onEdit={() => handleEdit(workspace)}
                                 onDelete={() => handleDelete(workspace)}
                             />
@@ -96,13 +83,10 @@ const WorkspaceListPage = () => {
                 <EditWorkspaceModal
                     isOpen={isEditModalOpen}
                     onClose={() => setIsEditModalOpen(false)}
-                    workspace={selectedWorkspace}
-                    onSave={saveWorkspace}
                 />
                 <DeleteWorkspaceModal
                     isOpen={isDeleteModalOpen}
                     onClose={() => setIsDeleteModalOpen(false)}
-                    onDelete={deleteWorkspace}
                 />
             </div>
         </div>

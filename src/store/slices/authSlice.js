@@ -64,7 +64,7 @@ export const loginUser = createAsyncThunk(
 // Async thunk for getting user details
 export const getUserDetails = createAsyncThunk(
     'getUserDetails',
-    async (userData, thunkAPI) => {
+    async (thunkAPI) => {
         try {
             const response = await Axios({
                 ...SummaryApi.getMe,

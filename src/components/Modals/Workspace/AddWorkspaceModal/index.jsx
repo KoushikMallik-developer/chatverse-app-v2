@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createWorkspace } from '../../../../store/slices/workspaceSlice.js'
 
 const CreateWorkspaceModal = ({ isOpen, onClose }) => {
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+
+    const dispatch = useDispatch()
+
     const handleSubmit = (e) => {
-        e.preventDefault()
-        // Handle form submission
+        dispatch(createWorkspace({ name, description }))
         onClose()
     }
 
@@ -35,19 +41,21 @@ const CreateWorkspaceModal = ({ isOpen, onClose }) => {
                 </h2>
                 <form className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-2">
-                            Workspace Name
-                        </label>
                         <input
                             type="text"
                             className="w-full px-4 py-2 rounded-lg bg-neutral-700 border border-neutral-600 text-white focus:outline-none focus:border-blue-500"
+                            placeholder="Workspace Name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-neutral-300 mb-2">
-                            Description
-                        </label>
-                        <textarea className="w-full px-4 py-2 rounded-lg bg-neutral-700 border border-neutral-600 text-white focus:outline-none focus:border-blue-500 resize-none h-24" />
+                        <textarea
+                            className="w-full px-4 py-2 rounded-lg bg-neutral-700 border border-neutral-600 text-white focus:outline-none focus:border-blue-500 resize-none h-24"
+                            placeholder="Workspace Description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
                     </div>
                     <div className="flex justify-end space-x-3">
                         <button
@@ -58,8 +66,8 @@ const CreateWorkspaceModal = ({ isOpen, onClose }) => {
                             Cancel
                         </button>
                         <button
-                            type="submit"
                             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            onClick={handleSubmit}
                         >
                             Create Workspace
                         </button>

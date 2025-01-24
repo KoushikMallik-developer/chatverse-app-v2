@@ -1,8 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import Axios from '../../utils/axios'
-import SummaryApi from '../../utils/summary_api'
-import { AxiosToastError } from '../../utils/axios_toast_error_handler'
 import toast from 'react-hot-toast'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import Axios from '../../utils/axios.js'
+import SummaryApi from '../../utils/summary_api.js'
+import { AxiosToastError } from '../../utils/axios_toast_error_handler.js'
 
 // Async thunk for getting workspaces
 export const fetchWorkspaces = createAsyncThunk(
@@ -79,7 +79,7 @@ export const updateWorkspace = createAsyncThunk(
 // Async thunk for creating a new workspace
 export const createWorkspace = createAsyncThunk(
     'workspace/createWorkspace',
-    async ({ workspaceData }, thunkAPI) => {
+    async (workspaceData, thunkAPI) => {
         try {
             const payload = {
                 name: workspaceData['name'],

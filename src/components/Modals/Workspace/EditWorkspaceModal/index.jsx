@@ -1,12 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { updateWorkspace } from '../../../../store/slices/workspaceSlice.js'
+import { useDispatch, useSelector } from 'react-redux'
 
-const EditWorkspaceModal = ({ isOpen, onClose, workspace, onSave }) => {
-    const [name, setName] = useState(workspace.name)
-    const [description, setDescription] = useState(workspace.description)
+const EditWorkspaceModal = ({ isOpen, onClose }) => {
+    const { currentWorkspace } = useSelector((state) => state.workspace)
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+
+    useEffect(() => {
+        setName(currentWorkspace.name)
+        setDescription(currentWorkspace.description)
+    }, [currentWorkspace])
+
+    const dispatch = useDispatch()
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        onSave({ ...workspace, name, description })
+        dispatch(
+            updateWorkspace({
+                workspaceData: {
+                    id: currentWorkspace._id,
+                    name: name,
+                    description: description,
+                },
+            })
+        )
         onClose()
     }
 
@@ -69,6 +86,7 @@ const EditWorkspaceModal = ({ isOpen, onClose, workspace, onSave }) => {
                         <button
                             type="submit"
                             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            onClick={handleSubmit}
                         >
                             Save Changes
                         </button>
