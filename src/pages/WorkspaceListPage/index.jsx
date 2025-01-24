@@ -76,18 +76,24 @@ const WorkspaceListPage = () => {
                     </div>
                 </div>
 
-                <CreateWorkspaceModal
-                    isOpen={isCreateModalOpen}
-                    onClose={() => setIsCreateModalOpen(false)}
-                />
-                <EditWorkspaceModal
-                    isOpen={isEditModalOpen}
-                    onClose={() => setIsEditModalOpen(false)}
-                />
-                <DeleteWorkspaceModal
-                    isOpen={isDeleteModalOpen}
-                    onClose={() => setIsDeleteModalOpen(false)}
-                />
+                {isCreateModalOpen && (
+                    <CreateWorkspaceModal
+                        isOpen={isCreateModalOpen}
+                        onClose={() => setIsCreateModalOpen(false)}
+                    />
+                )}
+                {isEditModalOpen && (
+                    <EditWorkspaceModal
+                        isOpen={isEditModalOpen}
+                        onClose={() => setIsEditModalOpen(false)}
+                    />
+                )}
+                {isDeleteModalOpen && (
+                    <DeleteWorkspaceModal
+                        isOpen={isDeleteModalOpen}
+                        onClose={() => setIsDeleteModalOpen(false)}
+                    />
+                )}
             </div>
         </div>
     )

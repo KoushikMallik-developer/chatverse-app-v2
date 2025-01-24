@@ -22,12 +22,15 @@ import {
 } from 'recharts'
 import StatCard from './StatCard/index.jsx'
 import ActivityItem from './ActivityItem/index.jsx'
+import { useSelector } from 'react-redux'
 
 const WorkspaceDashboard = ({
     setIsMobileMenuOpen,
     isMobileMenuOpen,
     menuButtonRef,
 }) => {
+    const { currentWorkspace } = useSelector((state) => state.workspace)
+
     const chartData = [
         { name: 'Mon', value: 30 },
         { name: 'Tue', value: 45 },
@@ -39,7 +42,7 @@ const WorkspaceDashboard = ({
     ]
 
     return (
-        <>
+        <div className="min-h-screen bg-neutral-900">
             {/* Header */}
             <header className="bg-neutral-800 border-b border-neutral-700 p-4">
                 <div className="flex items-center justify-between flex-wrap gap-4">
@@ -74,12 +77,12 @@ const WorkspaceDashboard = ({
                     </div>
                 </div>
             </header>
-            <div className=" p-6 bg-neutral-900 min-h-screen">
+            <div className="p-6">
                 <div className="mb-8">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                         <div>
                             <h1 className="text-2xl font-bold text-white mb-2">
-                                Marketing Team Workspace
+                                {currentWorkspace.name} Workspace
                             </h1>
                             <p className="text-neutral-400">
                                 Monitor your team's performance and activity
@@ -101,7 +104,7 @@ const WorkspaceDashboard = ({
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <StatCard
                         icon={Users}
-                        label="Active Members"
+                        label="Members"
                         value="32"
                         trend="up"
                         trendValue="12%"
@@ -231,7 +234,7 @@ const WorkspaceDashboard = ({
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

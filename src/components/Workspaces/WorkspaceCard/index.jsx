@@ -1,12 +1,17 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setActiveWorkspace } from '../../../store/slices/workspaceSlice.js'
 
 const WorkspaceCard = ({ workspace, onEdit, onDelete }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const navigate = useNavigate()
 
-    const handleGoToWorkspace = (name) => {
-        navigate(`/workspace/${name}`)
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const handleGoToWorkspace = (workspace) => {
+        dispatch(setActiveWorkspace(workspace))
+        navigate(`/workspace/${workspace._id}`)
     }
 
     const handleClickOutside = () => {
@@ -68,7 +73,7 @@ const WorkspaceCard = ({ workspace, onEdit, onDelete }) => {
                 <button
                     className="flex-1 px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600 transition-colors"
                     onClick={() => {
-                        handleGoToWorkspace(workspace.name)
+                        handleGoToWorkspace(workspace)
                     }}
                 >
                     Open

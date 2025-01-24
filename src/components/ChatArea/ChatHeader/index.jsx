@@ -3,17 +3,18 @@ import { Info, Search } from 'lucide-react'
 import ChannelDetailsModal from '../../Modals/Channel/ChannelDetailsModal/index.jsx'
 import ChannelSettingsModal from '../../Modals/Channel/ChannelSettingsModal/index.jsx'
 import DeleteChannelModal from '../../Modals/Channel/DeleteChannelModal/index.jsx'
+import { useSelector } from 'react-redux'
 
 const ChatHeader = ({
     isMobileMenuOpen,
     setIsMobileMenuOpen,
     menuButtonRef,
-    channelData,
 }) => {
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false)
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
+    const { currentChannel } = useSelector((state) => state.channel)
     const handleAddMember = (email) => {
         console.log('Adding member:', email)
         // Implement member addition logic
@@ -57,7 +58,7 @@ const ChatHeader = ({
                         {/* Added left padding */}
                         <span className="text-neutral-400 mr-2">#</span>
                         <h1 className="text-lg font-semibold text-white">
-                            {channelData.name}
+                            {currentChannel.name}
                         </h1>
                     </div>
                     <button
@@ -82,7 +83,7 @@ const ChatHeader = ({
             <ChannelDetailsModal
                 isOpen={isDetailsModalOpen}
                 onClose={() => setIsDetailsModalOpen(false)}
-                channelData={channelData}
+                channelData={currentChannel}
                 onAddMember={handleAddMember}
                 onOpenSettings={() => {
                     setIsSettingsModalOpen(true)
@@ -93,7 +94,7 @@ const ChatHeader = ({
             <ChannelSettingsModal
                 isOpen={isSettingsModalOpen}
                 onClose={() => setIsSettingsModalOpen(false)}
-                channelData={channelData}
+                channelData={currentChannel}
                 onUpdate={handleUpdateChannel}
                 onDelete={() => setIsDeleteModalOpen(true)}
             />

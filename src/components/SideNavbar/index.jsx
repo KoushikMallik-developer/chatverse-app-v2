@@ -11,8 +11,11 @@ import {
 } from 'lucide-react'
 import NavigationItem from './NavigationItem/index.jsx'
 import NavigationLink from './NavigationLink/index.jsx'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import WorkspaceSettingsModal from '../Modals/Workspace/WorkspaceSettingsModal/index.jsx'
+import { useDispatch, useSelector } from 'react-redux'
+import { setActiveWorkspace } from '../../store/slices/workspaceSlice.js'
+import { setActiveChannel } from '../../store/slices/channelSlice.js'
 
 const SidebarNavigation = ({
     isMobileMenuOpen,
@@ -23,29 +26,34 @@ const SidebarNavigation = ({
 }) => {
     const sidebarRef = useRef(null)
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                isMobileMenuOpen &&
-                sidebarRef.current &&
-                !sidebarRef.current.contains(event.target) &&
-                !menuButtonRef.current.contains(event.target)
-            ) {
-                setIsMobileMenuOpen(false)
-            }
-        }
+    const { workspaces, currentWorkspace } = useSelector(
+        (state) => state.workspace
+    )
+    const { channels, currentChannel } = useSelector((state) => state.channel)
+    const { dms } = useSelector((state) => state.dm)
+    const { user } = useSelector((state) => state.auth)
 
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const handleSwitchWorkspace = (workspace) => {
+        dispatch(setActiveWorkspace(workspace))
+        navigate(`/workspace/${workspace._id}`)
+    }
+
+    const handleSwitchChannel = (channel) => {
+        dispatch(setActiveChannel(channel))
+    }
+
+    useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
                 setIsMobileMenuOpen(false)
             }
         }
-
-        document.addEventListener('mousedown', handleClickOutside)
         window.addEventListener('resize', handleResize)
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
             window.removeEventListener('resize', handleResize)
         }
     }, [isMobileMenuOpen])
@@ -72,7 +80,7 @@ const SidebarNavigation = ({
                             </span>
                         </Link>
                         <h1 className="md:text-2xl sm:text-xl font-bold text-white">
-                            Splitzy Team
+                            {currentWorkspace.name}
                         </h1>
                     </div>
                     <div className="space-x-2 flex items-center">
@@ -98,18 +106,42 @@ const SidebarNavigation = ({
                 <div className="flex-1 px-4 py-6 space-y-3 overflow-y-auto scrollbar-hide">
                     {/* Workspaces */}
                     <NavigationItem icon={Workflow} label="Workspaces">
-                        <NavigationLink href="#">Workspace 1</NavigationLink>
-                        <NavigationLink href="#">Workspace 2</NavigationLink>
-                        <NavigationLink href="#">Workspace 3</NavigationLink>
+                        {workspaces.map((workspace) => (
+                            <button
+                                className={`text-white hover:bg-neutral-700 px-4 py-2 rounded-lg transition-colors duration-200 ${
+                                    workspace._id === currentWorkspace?._id
+                                        ? 'bg-neutral-700'
+                                        : ''
+                                }`}
+                                key={workspace._id}
+                                onClick={() => {
+                                    handleSwitchWorkspace(workspace)
+                                }}
+                            >
+                                {workspace.name}
+                            </button>
+                        ))}
                     </NavigationItem>
 
                     {/* Channels */}
                     <NavigationItem icon={Hash} label="Channels">
-                        <NavigationLink href="#"># General</NavigationLink>
-                        <NavigationLink href="#"># Random</NavigationLink>
-                        <NavigationLink href="#">
-                            # Announcements
-                        </NavigationLink>
+                        {channels
+                            .filter((channel) => channel.type !== 'dm')
+                            .map((channel) => (
+                                <button
+                                    className={`text-white hover:bg-neutral-700 px-4 py-2 rounded-lg transition-colors duration-200 ${
+                                        channel._id === currentChannel?._id
+                                            ? 'bg-neutral-700'
+                                            : ''
+                                    }`}
+                                    key={channel._id}
+                                    onClick={() => {
+                                        handleSwitchChannel(channel)
+                                    }}
+                                >
+                                    {channel.name}
+                                </button>
+                            ))}
                     </NavigationItem>
 
                     {/* Direct Messages */}
@@ -117,8 +149,23 @@ const SidebarNavigation = ({
                         icon={MessageSquare}
                         label="Direct Messages"
                     >
-                        <NavigationLink href="#">John Doe</NavigationLink>
-                        <NavigationLink href="#">Jane Smith</NavigationLink>
+                        {dms.map((channel) => (
+                            <button
+                                className={`text-white hover:bg-neutral-700 px-4 py-2 rounded-lg transition-colors duration-200 ${
+                                    channel._id === currentChannel?._id
+                                        ? 'bg-neutral-700'
+                                        : ''
+                                }`}
+                                key={channel._id}
+                                onClick={() => {
+                                    handleSwitchChannel(channel)
+                                }}
+                            >
+                                {channel.members[0]._id !== user._id
+                                    ? channel.members[0].name
+                                    : channel.members[1].name}
+                            </button>
+                        ))}
                     </NavigationItem>
 
                     {/* Search */}

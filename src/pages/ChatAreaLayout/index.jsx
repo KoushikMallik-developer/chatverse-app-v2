@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import SidebarNavigation from '../../components/SideNavbar/index.jsx'
 import WorkspaceDashboard from '../../components/Workspaces/WorkspaceDashboard/index.jsx'
 import ChannelChatArea from '../../components/ChatArea/ChannelChatArea/index.jsx'
@@ -7,11 +7,17 @@ import SearchResults from '../../components/SearchResults/index.jsx'
 import { useNavigate } from 'react-router-dom'
 import WorkspaceSettingsModal from '../../components/Modals/Workspace/WorkspaceSettingsModal/index.jsx'
 import AddUserWorkspaceModal from '../../components/Modals/Workspace/AddUserToWorkspaceModal/index.jsx'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchChannels } from '../../store/slices/channelSlice.js'
+import { getDMs } from '../../store/slices/dmSlice.js'
 
 const ChatArea = () => {
     const navigate = useNavigate()
-    const { currentWorkspace } = useSelector((state) => state.workspace)
+    const dispatch = useDispatch()
+
+    const { currentWorkspace, workspaces } = useSelector(
+        (state) => state.workspace
+    )
     const { currentChannel, channels } = useSelector((state) => state.channel)
     const { dms } = useSelector((state) => state.dm)
 
@@ -27,7 +33,7 @@ const ChatArea = () => {
 
     const handleBackToChatClick = () => {
         // Navigate back to chat (implementation depends on your routing setup)
-        navigate('/workspace/abcd') // or history.push('/chat') etc.
+        navigate(`/workspace/${currentWorkspace._id}`) // or history.push('/chat') etc.
     }
     const workspace = {
         name: 'Tech Company',
@@ -36,6 +42,13 @@ const ChatArea = () => {
         channels: 12,
         messages: 156,
     }
+
+    useEffect(() => {
+        console.log(currentWorkspace._id)
+        dispatch(fetchChannels({ workspaceId: currentWorkspace._id }))
+        dispatch(getDMs({ workspaceId: currentWorkspace._id }))
+    }, [currentWorkspace._id])
+
     return (
         <div className="flex">
             <SidebarNavigation
