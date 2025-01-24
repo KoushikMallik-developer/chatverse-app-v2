@@ -31,7 +31,7 @@ const Header = () => {
                         <MessageCircle className="h-8 w-8 text-blue-500" />
                         <Link to="/">
                             <span className="ml-2 text-xl font-bold">
-                                {import.meta.env.VITE_APP_NAME}
+                                {import.meta.env.VITE_APP_NAME || 'ChatVerse'}
                             </span>
                         </Link>
                     </div>
