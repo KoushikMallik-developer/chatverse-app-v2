@@ -7,13 +7,14 @@ import SearchResults from '../../components/SearchResults/index.jsx'
 import { useNavigate } from 'react-router-dom'
 import WorkspaceSettingsModal from '../../components/Modals/Workspace/WorkspaceSettingsModal/index.jsx'
 import AddUserWorkspaceModal from '../../components/Modals/Workspace/AddUserToWorkspaceModal/index.jsx'
+import { useSelector } from 'react-redux'
 
 const ChatArea = () => {
     const navigate = useNavigate()
-    const [currentChannel, setCurrentChannel] = useState({
-        type: 'public',
-    })
-    // const currentChannel = null
+    const { currentWorkspace } = useSelector((state) => state.workspace)
+    const { currentChannel, channels } = useSelector((state) => state.channel)
+    const { dms } = useSelector((state) => state.dm)
+
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const menuButtonRef = useRef(null)
     const [searchResult, setSearchResult] = useState(null)
@@ -48,7 +49,7 @@ const ChatArea = () => {
             />
             <div className="flex-1 justify-center items-center">
                 {!searchResult ? (
-                    currentChannel ? (
+                    currentChannel?._id ? (
                         currentChannel.type === 'dm' ? (
                             <DMChatArea
                                 isMobileMenuOpen={isMobileMenuOpen}
@@ -63,7 +64,11 @@ const ChatArea = () => {
                             />
                         )
                     ) : (
-                        <WorkspaceDashboard />
+                        <WorkspaceDashboard
+                            isMobileMenuOpen={isMobileMenuOpen}
+                            setIsMobileMenuOpen={setIsMobileMenuOpen}
+                            menuButtonRef={menuButtonRef}
+                        />
                     )
                 ) : (
                     <SearchResults onBackClick={handleBackToChatClick} />
