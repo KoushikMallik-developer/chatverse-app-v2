@@ -40,7 +40,7 @@ const ChannelDetailsModal = ({ isOpen, onClose, onOpenSettings }) => {
                         <h3 className="text-sm font-medium text-neutral-300 mb-2">
                             Channel Name
                         </h3>
-                        <p className="text-white">#{currentChannel.name}</p>
+                        <p className="text-white"># {currentChannel.name}</p>
                     </div>
                     <div>
                         <h3 className="text-sm font-medium text-neutral-300 mb-2">
@@ -48,6 +48,14 @@ const ChannelDetailsModal = ({ isOpen, onClose, onOpenSettings }) => {
                         </h3>
                         <p className="text-white">
                             {currentChannel.description}
+                        </p>
+                    </div>
+                    <div>
+                        <h3 className="text-sm font-medium text-neutral-300 mb-2">
+                            Type
+                        </h3>
+                        <p className="text-white">
+                            {currentChannel.type.toString().toUpperCase()}
                         </p>
                     </div>
                     <div>

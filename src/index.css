@@ -15,3 +15,13 @@ h3 {
 p {
     font-family: 'Inter', sans-serif;
 }
+
+@layer utilities {
+    .scrollbar-hide {
+        -ms-overflow-style: none; /* Internet Explorer and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, and Opera */
+    }
+}

@@ -48,7 +48,7 @@ const AddUserChannelModal = ({ isOpen, onClose }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-30">
             <div className="bg-neutral-800 rounded-lg p-6 w-full max-w-md border border-neutral-700">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-bold text-white">{`Add People to #${currentChannel.name}`}</h2>
+                    <h2 className="text-xl font-bold text-white">{`Add People to # ${currentChannel.name}`}</h2>
                     <button
                         onClick={() => {
                             onClose()
