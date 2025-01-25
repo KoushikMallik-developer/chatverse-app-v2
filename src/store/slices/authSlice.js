@@ -84,11 +84,65 @@ export const getUserDetails = createAsyncThunk(
     }
 )
 
+// Async thunk for search users
+export const searchAllUsers = createAsyncThunk(
+    'searcAllhUsers',
+    async ({ query }, thunkAPI) => {
+        try {
+            const payload = {
+                query: query,
+            }
+            const response = await Axios({
+                ...SummaryApi.searchAllUsers,
+                data: payload,
+            })
+            return {
+                message: 'Search Results fetched successfully',
+                users: response.data,
+                status_code: response.status,
+            }
+        } catch (error) {
+            const errorPayload = AxiosToastError(error)
+            return thunkAPI.rejectWithValue({
+                message: errorPayload.message,
+                status_code: error.status,
+            })
+        }
+    }
+) // Async thunk for search users in Workspace
+export const searchWorkspaceUsers = createAsyncThunk(
+    'searchWorkspaceUsers',
+    async ({ query, workspaceId }, thunkAPI) => {
+        try {
+            const payload = {
+                query: query,
+                workspaceId: workspaceId,
+            }
+            const response = await Axios({
+                ...SummaryApi.searchWorkspaceUsers,
+                data: payload,
+            })
+            return {
+                message: 'Search Results fetched successfully',
+                users: response.data,
+                status_code: response.status,
+            }
+        } catch (error) {
+            const errorPayload = AxiosToastError(error)
+            return thunkAPI.rejectWithValue({
+                message: errorPayload.message,
+                status_code: error.status,
+            })
+        }
+    }
+)
+
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
         currentAuthForm: 'login',
         user: null,
+        searchedUsers: [],
         isLoggedIn: false,
         token: null,
         refresh_token: null,
@@ -124,6 +178,9 @@ const authSlice = createSlice({
             state.message = action.payload.message
             state.status_code = action.payload.status_code
             toast.error(state.message)
+        },
+        resetSearchedUsers: (state) => {
+            state.searchedUsers = []
         },
     },
     extraReducers: (builder) => {
@@ -186,6 +243,38 @@ const authSlice = createSlice({
                 state.message = action.payload.message
                 state.status_code = action.payload.status_code
             })
+            .addCase(searchAllUsers.pending, (state) => {
+                state.isLoading = true
+                state.message = null
+            })
+            .addCase(searchAllUsers.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.message = action.payload.message
+                state.searchedUsers = action.payload.users
+                state.status_code = action.payload.status_code
+                toast.success(state.message)
+            })
+            .addCase(searchAllUsers.rejected, (state, action) => {
+                state.isLoading = false
+                state.message = action.payload.message
+                state.status_code = action.payload.status_code
+            })
+            .addCase(searchWorkspaceUsers.pending, (state) => {
+                state.isLoading = true
+                state.message = null
+            })
+            .addCase(searchWorkspaceUsers.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.message = action.payload.message
+                state.searchedUsers = action.payload.users
+                state.status_code = action.payload.status_code
+                toast.success(state.message)
+            })
+            .addCase(searchWorkspaceUsers.rejected, (state, action) => {
+                state.isLoading = false
+                state.message = action.payload.message
+                state.status_code = action.payload.status_code
+            })
     },
 })
 
@@ -196,6 +285,7 @@ export const {
     resetMessages,
     setCurrentAuthForm,
     resetCurrentAuthForm,
+    resetSearchedUsers,
 } = authSlice.actions
 
 export default authSlice.reducer

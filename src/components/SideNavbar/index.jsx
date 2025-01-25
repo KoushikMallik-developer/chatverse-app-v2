@@ -10,9 +10,7 @@ import {
     ArrowLeft,
 } from 'lucide-react'
 import NavigationItem from './NavigationItem/index.jsx'
-import NavigationLink from './NavigationLink/index.jsx'
 import { Link, useNavigate } from 'react-router-dom'
-import WorkspaceSettingsModal from '../Modals/Workspace/WorkspaceSettingsModal/index.jsx'
 import { useDispatch, useSelector } from 'react-redux'
 import { setActiveWorkspace } from '../../store/slices/workspaceSlice.js'
 import { setActiveChannel } from '../../store/slices/channelSlice.js'
@@ -20,8 +18,6 @@ import { setActiveChannel } from '../../store/slices/channelSlice.js'
 const SidebarNavigation = ({
     isMobileMenuOpen,
     setIsMobileMenuOpen,
-    menuButtonRef,
-    isWorkspaceSettingsModalOpen,
     setIsWorkspaceSettingsModalOpen,
 }) => {
     const sidebarRef = useRef(null)
@@ -38,11 +34,13 @@ const SidebarNavigation = ({
 
     const handleSwitchWorkspace = (workspace) => {
         dispatch(setActiveWorkspace(workspace))
+        setIsMobileMenuOpen(false)
         navigate(`/workspace/${workspace._id}`)
     }
 
     const handleSwitchChannel = (channel) => {
         dispatch(setActiveChannel(channel))
+        setIsMobileMenuOpen(false)
     }
 
     useEffect(() => {

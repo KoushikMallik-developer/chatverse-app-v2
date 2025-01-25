@@ -17,6 +17,14 @@ const SummaryApi = {
         url: '/api/users/me',
         method: 'get',
     },
+    searchAllUsers: {
+        url: '/api/users/search',
+        method: 'post',
+    },
+    searchWorkspaceUsers: {
+        url: '/api/users/workspace/search',
+        method: 'post',
+    },
     getWorkspaces: {
         url: '/api/workspaces',
         method: 'get',

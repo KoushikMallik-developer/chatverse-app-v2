@@ -72,7 +72,7 @@ const ChatHeader = ({
                     <div className="relative max-w-xs w-full sm:max-w-md">
                         <input
                             type="text"
-                            placeholder="Search messages"
+                            placeholder="Search"
                             className="w-full px-4 py-1 bg-neutral-700 rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         <Search className="w-4 h-4 absolute right-3 top-2.5 text-neutral-400" />

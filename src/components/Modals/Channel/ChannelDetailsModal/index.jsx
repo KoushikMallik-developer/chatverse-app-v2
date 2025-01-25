@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
 import { Settings, UserPlus, X } from 'lucide-react'
 import AddUserToChannelModal from '../AddUserToChannelModal/index.jsx'
+import { useSelector } from 'react-redux'
+import NameToAvatar from '../../../../utils/name_to_avatar.jsx'
 
-const ChannelDetailsModal = ({
-    isOpen,
-    onClose,
-    channelData,
-    onAddMember,
-    onOpenSettings,
-}) => {
+const ChannelDetailsModal = ({ isOpen, onClose, onOpenSettings }) => {
     const [showAllMembers, setShowAllMembers] = useState(false)
     const [showAddMember, setShowAddMember] = useState(false)
     const [newMemberEmail, setNewMemberEmail] = useState('')
+
+    const { currentChannel } = useSelector((state) => state.channel)
 
     if (!isOpen) return null
 
@@ -42,18 +40,20 @@ const ChannelDetailsModal = ({
                         <h3 className="text-sm font-medium text-neutral-300 mb-2">
                             Channel Name
                         </h3>
-                        <p className="text-white">#{channelData.name}</p>
+                        <p className="text-white">#{currentChannel.name}</p>
                     </div>
                     <div>
                         <h3 className="text-sm font-medium text-neutral-300 mb-2">
                             Description
                         </h3>
-                        <p className="text-white">{channelData.description}</p>
+                        <p className="text-white">
+                            {currentChannel.description}
+                        </p>
                     </div>
                     <div>
                         <div className="flex justify-between items-center mb-2">
                             <h3 className="text-sm font-medium text-neutral-300">
-                                Members ({channelData.memberCount})
+                                Members ({currentChannel.members.length})
                             </h3>
                             <button
                                 onClick={() => setShowAddMember(true)}
@@ -64,22 +64,21 @@ const ChannelDetailsModal = ({
                             </button>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                            {channelData.members
+                            {currentChannel.members
                                 .slice(0, 3)
                                 .map((member, index) => (
-                                    <img
-                                        key={index}
-                                        src="/api/placeholder/32/32"
-                                        alt="Member Avatar"
-                                        className="w-8 h-8 rounded-full"
+                                    <NameToAvatar
+                                        key={member._id}
+                                        name={member.name}
+                                        size={30}
                                     />
                                 ))}
-                            {channelData.memberCount > 3 && (
+                            {currentChannel.members.length > 3 && (
                                 <button
                                     onClick={() => setShowAllMembers(true)}
                                     className="w-8 h-8 rounded-full bg-neutral-700 text-white flex items-center justify-center text-sm hover:bg-neutral-600"
                                 >
-                                    +{channelData.memberCount - 3}
+                                    +{currentChannel.members.length - 3}
                                 </button>
                             )}
                         </div>
@@ -103,18 +102,18 @@ const ChannelDetailsModal = ({
                             </button>
                         </div>
                         <div className="space-y-4">
-                            {channelData.members.map((member, index) => (
+                            {currentChannel.members.map((member, index) => (
                                 <div
-                                    key={index}
+                                    key={member._id}
                                     className="flex items-center space-x-3"
                                 >
-                                    <img
-                                        src="/api/placeholder/32/32"
-                                        alt="Member Avatar"
-                                        className="w-8 h-8 rounded-full"
+                                    <NameToAvatar
+                                        key={member._id}
+                                        name={member.name}
+                                        size={30}
                                     />
                                     <span className="text-white">
-                                        Member Name {index + 1}
+                                        {member.name}
                                     </span>
                                 </div>
                             ))}
