@@ -172,7 +172,7 @@ const SidebarNavigation = ({
                                         <div className="flex justify-between items-center">
                                             <span># {channel.name}</span>
                                             {notifications[channel._id] > 0 && (
-                                                <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1">
+                                                <span className="bg-red-500 text-white text-xs rounded-full p-2">
                                                     {notifications[channel._id]}
                                                 </span>
                                             )}
