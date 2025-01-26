@@ -76,12 +76,33 @@ const SidebarNavigation = ({
         }
     }, [isMobileMenuOpen])
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                sidebarRef.current &&
+                !sidebarRef.current.contains(event.target)
+            ) {
+                setIsMobileMenuOpen(false)
+            }
+        }
+
+        if (isMobileMenuOpen) {
+            document.addEventListener('mousedown', handleClickOutside)
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [isMobileMenuOpen])
+
     return (
         <>
             <nav
                 ref={sidebarRef}
                 className={`
-          h-screen w-64 bg-neutral-800 fixed lg:relative border-r border-neutral-700
+          h-screen w-72 bg-neutral-800 fixed lg:relative border-r border-neutral-700
           transition-transform duration-300 ease-in-out z-20
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
@@ -249,30 +270,26 @@ const SidebarNavigation = ({
                             ))}
                         </NavigationItem>
 
-                        {/* Search */}
-                        <a
-                            href="#search"
-                            className="flex items-center px-4 py-2 text-neutral-300 hover:bg-neutral-700 rounded-lg transition-colors duration-200"
-                        >
-                            <Search className="w-5 h-5 mr-3" />
-                            Search
-                        </a>
+                        {/*/!* Search *!/*/}
+                        {/*<a*/}
+                        {/*    href="#search"*/}
+                        {/*    className="flex items-center px-4 py-2 text-neutral-300 hover:bg-neutral-700 rounded-lg transition-colors duration-200"*/}
+                        {/*>*/}
+                        {/*    <Search className="w-5 h-5 mr-3" />*/}
+                        {/*    Search*/}
+                        {/*</a>*/}
                     </div>
 
                     {/* User Profile */}
                     <div className="px-6 py-4 border-t border-neutral-700">
                         <div className="flex items-center space-x-3">
-                            <img
-                                src="/api/placeholder/32/32"
-                                alt="User"
-                                className="w-8 h-8 rounded-full"
-                            />
+                            <NameToAvatar name={user.name} size={40} />
                             <div className="flex-1">
                                 <p className="text-sm font-medium text-neutral-300">
-                                    John Doe
+                                    {user.name}
                                 </p>
                                 <p className="text-xs text-neutral-400">
-                                    john@example.com
+                                    {user.email}
                                 </p>
                             </div>
                             <button className="text-neutral-400 hover:text-white">

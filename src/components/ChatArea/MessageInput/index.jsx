@@ -61,6 +61,7 @@ const MessageInput = () => {
             message.substring(0, start) + emoji + message.substring(end)
         setMessage(newMessage)
         setShowEmojiPicker(false)
+        document.getElementById('messageInput').focus()
     }
 
     const handleInput = (e) => {
@@ -105,11 +106,13 @@ const MessageInput = () => {
         const newMessage =
             message.substring(0, start) + formattedText + message.substring(end)
         setMessage(newMessage)
+        document.getElementById('messageInput').focus()
     }
 
     const handleImageUpload = (e) => {
         const files = Array.from(e.target.files)
         setImageFiles([...imageFiles, ...files])
+        document.getElementById('messageInput').focus()
     }
 
     const handleSend = () => {
@@ -126,6 +129,7 @@ const MessageInput = () => {
             setImageFiles([])
             if (textareaRef.current) {
                 textareaRef.current.style.height = 'auto'
+                document.getElementById('messageInput').focus()
             }
         }
     }
@@ -220,6 +224,7 @@ const MessageInput = () => {
 
                     <div className="relative">
                         <textarea
+                            id="messageInput"
                             ref={textareaRef}
                             value={message}
                             onChange={handleInput}

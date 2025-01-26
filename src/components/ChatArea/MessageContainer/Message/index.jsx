@@ -8,39 +8,44 @@ const Message = ({ message }) => {
     const reactionsList = ['👍', '❤️', '😊', '🎉', '🚀', '👏', '🔥']
 
     const renderFormattedContent = (text) => {
-        // Replace markdown-style formatting with HTML
-        return text.replace(
-            /(\*\*|__)(.*?)\1|(\*|_)(.*?)\3|(`{3})(.*?)\5|(`)(.*?)\7|\[(.*?)\]\((.*?)\)/g,
-            (match, b1, b2, i1, i2, c1, c2, cs1, cs2, l1, l2) => {
-                if (b1) return <strong key={Math.random()}>{b2}</strong>
-                if (i1) return <em key={Math.random()}>{i2}</em>
-                if (c1)
-                    return (
-                        <pre key={Math.random()}>
-                            <code>{c2}</code>
-                        </pre>
-                    )
-                if (cs1) return <code key={Math.random()}>{cs2}</code>
-                if (l1)
-                    return (
-                        <a
-                            href={l2}
-                            key={Math.random()}
-                            className="text-blue-400 hover:underline"
-                        >
-                            {l1}
-                        </a>
-                    )
-                return match
-            }
+        if (!text) return null
+
+        // Replace bold (**text**)
+        text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+
+        // Replace italic (*text*)
+        text = text.replace(/\*(.*?)\*/g, '<em>$1</em>')
+
+        // Replace code block (```text```)
+        text = text.replace(
+            /```\n([^]+?)\n```/g,
+            '<pre><code class="bg-neutral-800 text-neutral-200 px-2 py-1 rounded block">$1</code></pre>'
         )
+        text = text.replace(
+            /```([^]+?)```/g,
+            '<pre><code class="bg-neutral-800 text-neutral-200 px-2 py-1 rounded block">$1</code></pre>'
+        )
+
+        // Replace inline code (`text`)
+        text = text.replace(
+            /`(.*?)`/g,
+            '<code class="bg-neutral-800 text-neutral-200 px-1 py-0.5 rounded">$1</code>'
+        )
+
+        // Replace links ([text](url))
+        text = text.replace(
+            /\[(.*?)\]\((.*?)\)/g,
+            '<a href="$2" class="text-blue-500 hover:underline">$1</a>'
+        )
+
+        return <span dangerouslySetInnerHTML={{ __html: text }} />
     }
 
     return (
-        <div className="flex space-x-4">
+        <div className="flex space-x-4 hover:bg-neutral-700 px-4 py-2">
             <NameToAvatar name={message.sender.name} size={30} />
             <div className="flex-1 min-w-0">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-between">
                     <span className="font-medium text-white">
                         {message.sender.name}
                     </span>
@@ -76,7 +81,7 @@ const Message = ({ message }) => {
                         ))}
                     </div>
                 )}
-                <div className="mt-2 relative flex items-center space-x-4">
+                <div className="mt-4 relative flex items-center justify-between">
                     <button
                         onClick={() =>
                             setShowReactionPicker(!showReactionPicker)

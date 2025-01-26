@@ -6,6 +6,7 @@ import {
     updateWorkspace,
 } from '../../../../store/slices/workspaceSlice.js'
 import { useNavigate } from 'react-router-dom'
+import NameToAvatar from '../../../../utils/name_to_avatar.jsx'
 
 const ConfirmationModal = ({
     isOpen,
@@ -138,7 +139,7 @@ const WorkspaceSettingsModal = ({
                     </div>
 
                     {/* Content */}
-                    <div className="flex-1 p-4 sm:p-6 overflow-y-auto">
+                    <div className="flex-1 p-4 sm:p-6 overflow-y-auto md:scrollbar-hide">
                         <div className="space-y-6">
                             {/* Basic Settings */}
                             <div>
@@ -197,14 +198,13 @@ const WorkspaceSettingsModal = ({
                                 <div className="space-y-2">
                                     {currentWorkspace.members.map((member) => (
                                         <div
-                                            key={member.id}
+                                            key={member._id}
                                             className="flex items-center justify-between p-2 sm:p-3 bg-neutral-700 rounded-lg flex-wrap sm:flex-nowrap gap-2"
                                         >
                                             <div className="flex items-center space-x-3 min-w-0">
-                                                <img
-                                                    src="/api/placeholder/32/32"
-                                                    alt={member.name}
-                                                    className="w-8 h-8 rounded-full flex-shrink-0"
+                                                <NameToAvatar
+                                                    name={member.name}
+                                                    size={40}
                                                 />
                                                 <div className="min-w-0 flex-1">
                                                     <p className="text-white text-sm sm:text-base truncate">
