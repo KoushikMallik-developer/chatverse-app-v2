@@ -283,6 +283,29 @@ const channelSlice = createSlice({
                 state.message = action.payload.message
                 state.status_code = action.payload.status_code
             })
+            .addCase(removeMemberFromChannel.pending, (state) => {
+                state.isLoading = true
+                state.message = null
+            })
+            .addCase(removeMemberFromChannel.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.message = action.payload.message
+                state.status_code = action.payload.status_code
+                const index = state.channels.findIndex(
+                    (channel) => channel._id === action.payload.channel._id
+                )
+                if (index !== -1) {
+                    state.channels[index] = action.payload.channel
+                }
+                state.currentChannel = action.payload.channel
+                toast.success(state.message)
+            })
+            .addCase(removeMemberFromChannel.rejected, (state, action) => {
+                state.isLoading = false
+                state.message = action.payload
+                state.message = action.payload.message
+                state.status_code = action.payload.status_code
+            })
     },
 })
 

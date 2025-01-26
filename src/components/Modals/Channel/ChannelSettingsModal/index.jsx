@@ -1,15 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Trash2, X } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateChannel } from '../../../../store/slices/channelSlice.js'
 
-const ChannelSettingsModal = ({
-    isOpen,
-    onClose,
-    channelData,
-    onUpdate,
-    onDelete,
-}) => {
-    const [name, setName] = useState(channelData.name)
-    const [description, setDescription] = useState(channelData.description)
+const ChannelSettingsModal = ({ isOpen, onClose, onDelete }) => {
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+
+    const { currentChannel } = useSelector((state) => state.channel)
+
+    const dispatch = useDispatch()
+
+    const handleSave = () => {
+        dispatch(
+            updateChannel({
+                channelId: currentChannel._id,
+                name: name,
+                description: description,
+            })
+        )
+    }
+
+    useEffect(() => {
+        setName(currentChannel.name)
+        setDescription(currentChannel.description)
+    }, [currentChannel._id])
 
     if (!isOpen) return null
 
@@ -62,10 +77,7 @@ const ChannelSettingsModal = ({
                             <span>Delete Channel</span>
                         </button>
                         <button
-                            onClick={() => {
-                                onUpdate({ name, description })
-                                onClose()
-                            }}
+                            onClick={handleSave}
                             className="px-2 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                         >
                             Save Changes

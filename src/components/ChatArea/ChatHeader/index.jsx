@@ -3,7 +3,8 @@ import { Info, Search } from 'lucide-react'
 import ChannelDetailsModal from '../../Modals/Channel/ChannelDetailsModal/index.jsx'
 import ChannelSettingsModal from '../../Modals/Channel/ChannelSettingsModal/index.jsx'
 import DeleteChannelModal from '../../Modals/Channel/DeleteChannelModal/index.jsx'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeChannel } from '../../../store/slices/channelSlice.js'
 
 const ChatHeader = ({
     isMobileMenuOpen,
@@ -15,19 +16,11 @@ const ChatHeader = ({
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
     const { currentChannel } = useSelector((state) => state.channel)
-    const handleAddMember = (email) => {
-        console.log('Adding member:', email)
-        // Implement member addition logic
-    }
 
-    const handleUpdateChannel = (updates) => {
-        console.log('Updating channel:', updates)
-        // Implement channel update logic
-    }
+    const dispatch = useDispatch()
 
     const handleDeleteChannel = () => {
-        console.log('Deleting channel')
-        // Implement channel deletion logic
+        dispatch(removeChannel({ channelId: currentChannel._id }))
     }
     return (
         <header className="bg-neutral-800 border-b border-neutral-700 p-4">
@@ -83,8 +76,6 @@ const ChatHeader = ({
             <ChannelDetailsModal
                 isOpen={isDetailsModalOpen}
                 onClose={() => setIsDetailsModalOpen(false)}
-                channelData={currentChannel}
-                onAddMember={handleAddMember}
                 onOpenSettings={() => {
                     setIsSettingsModalOpen(true)
                     setIsDetailsModalOpen(false)
@@ -94,11 +85,8 @@ const ChatHeader = ({
             <ChannelSettingsModal
                 isOpen={isSettingsModalOpen}
                 onClose={() => setIsSettingsModalOpen(false)}
-                channelData={currentChannel}
-                onUpdate={handleUpdateChannel}
                 onDelete={() => setIsDeleteModalOpen(true)}
             />
-
             <DeleteChannelModal
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}

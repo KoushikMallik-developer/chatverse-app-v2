@@ -20,6 +20,7 @@ const ChatArea = () => {
     )
     const { currentChannel, channels } = useSelector((state) => state.channel)
     const { dms } = useSelector((state) => state.dm)
+    const { token } = useSelector((state) => state.auth)
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
     const menuButtonRef = useRef(null)
@@ -32,8 +33,7 @@ const ChatArea = () => {
     ] = useState(false)
 
     const handleBackToChatClick = () => {
-        // Navigate back to chat (implementation depends on your routing setup)
-        navigate(`/workspace/${currentWorkspace._id}`) // or history.push('/chat') etc.
+        navigate(`/workspace/${currentWorkspace._id}`)
     }
     const workspace = {
         name: 'Tech Company',
@@ -44,10 +44,9 @@ const ChatArea = () => {
     }
 
     useEffect(() => {
-        console.log(currentWorkspace._id)
         dispatch(fetchChannels({ workspaceId: currentWorkspace._id }))
         dispatch(getDMs({ workspaceId: currentWorkspace._id }))
-    }, [currentWorkspace._id])
+    }, [currentWorkspace, token])
 
     return (
         <div className="flex">

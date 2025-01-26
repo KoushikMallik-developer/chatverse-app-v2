@@ -1,15 +1,25 @@
 import React, { useState } from 'react'
-import { Settings, UserPlus, X } from 'lucide-react'
+import { Settings, UserPlus, X, Trash2 } from 'lucide-react'
 import AddUserToChannelModal from '../AddUserToChannelModal/index.jsx'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import NameToAvatar from '../../../../utils/name_to_avatar.jsx'
+import { removeMemberFromChannel } from '../../../../store/slices/channelSlice.js'
 
 const ChannelDetailsModal = ({ isOpen, onClose, onOpenSettings }) => {
     const [showAllMembers, setShowAllMembers] = useState(false)
     const [showAddMember, setShowAddMember] = useState(false)
-    const [newMemberEmail, setNewMemberEmail] = useState('')
 
     const { currentChannel } = useSelector((state) => state.channel)
+    const dispatch = useDispatch()
+
+    const handleRemoveMember = (memberId) => {
+        dispatch(
+            removeMemberFromChannel({
+                channelId: currentChannel._id,
+                userId: memberId,
+            })
+        )
+    }
 
     if (!isOpen) return null
 
@@ -74,20 +84,40 @@ const ChannelDetailsModal = ({ isOpen, onClose, onOpenSettings }) => {
                         <div className="flex flex-wrap gap-2">
                             {currentChannel.members
                                 .slice(0, 3)
-                                .map((member, index) => (
-                                    <NameToAvatar
+                                .map((member) => (
+                                    <div
                                         key={member._id}
-                                        name={member.name}
-                                        size={30}
-                                    />
+                                        className="flex items-center space-x-3 justify-between w-full"
+                                    >
+                                        <div className="flex items-center space-x-3">
+                                            <NameToAvatar
+                                                name={member.name}
+                                                size={30}
+                                            />
+                                            <span className="text-white">
+                                                {member.name}
+                                            </span>
+                                        </div>
+                                        <button
+                                            onClick={() =>
+                                                handleRemoveMember(member._id)
+                                            }
+                                            className="text-red-500 hover:text-red-400"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </div>
                                 ))}
                             {currentChannel.members.length > 3 && (
-                                <button
-                                    onClick={() => setShowAllMembers(true)}
-                                    className="w-8 h-8 rounded-full bg-neutral-700 text-white flex items-center justify-center text-sm hover:bg-neutral-600"
-                                >
-                                    +{currentChannel.members.length - 3}
-                                </button>
+                                <div className="flex items-center space-x-1 text-white">
+                                    <button
+                                        onClick={() => setShowAllMembers(true)}
+                                        className="w-8 h-8 rounded-full bg-neutral-700 text-white flex items-center justify-center text-sm hover:bg-neutral-600"
+                                    >
+                                        +{currentChannel.members.length - 3}
+                                    </button>{' '}
+                                    <span>more</span>
+                                </div>
                             )}
                         </div>
                     </div>
@@ -110,19 +140,28 @@ const ChannelDetailsModal = ({ isOpen, onClose, onOpenSettings }) => {
                             </button>
                         </div>
                         <div className="space-y-4">
-                            {currentChannel.members.map((member, index) => (
+                            {currentChannel.members.map((member) => (
                                 <div
                                     key={member._id}
-                                    className="flex items-center space-x-3"
+                                    className="flex items-center space-x-3 justify-between"
                                 >
-                                    <NameToAvatar
-                                        key={member._id}
-                                        name={member.name}
-                                        size={30}
-                                    />
-                                    <span className="text-white">
-                                        {member.name}
-                                    </span>
+                                    <div className="flex items-center space-x-3">
+                                        <NameToAvatar
+                                            name={member.name}
+                                            size={30}
+                                        />
+                                        <span className="text-white">
+                                            {member.name}
+                                        </span>
+                                    </div>
+                                    <button
+                                        onClick={() =>
+                                            handleRemoveMember(member._id)
+                                        }
+                                        className="text-red-500 hover:text-red-400"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
                                 </div>
                             ))}
                         </div>

@@ -130,7 +130,7 @@ const SidebarNavigation = ({
                         <NavigationItem icon={Hash} label="Channels">
                             <div>
                                 <button
-                                    className="text-white font-sm bg-neutral-900 hover:bg-neutral-600 p-2 rounded-lg transition-colors duration-200 flex items-center space-x-2 w-full"
+                                    className="text-white font-sm bg-neutral-900 hover:bg-neutral-600 p-2 rounded-lg transition-colors duration-200 flex items-center space-x-2 w-full my-2"
                                     onClick={() => {
                                         setShowCreateChannelModal(true)
                                     }}
@@ -165,7 +165,7 @@ const SidebarNavigation = ({
                         >
                             <div>
                                 <button
-                                    className="text-white font-sm bg-neutral-900 hover:bg-neutral-600 p-2 rounded-lg transition-colors duration-200 flex items-center space-x-2 w-full"
+                                    className="text-white font-sm bg-neutral-900 hover:bg-neutral-600 p-2 rounded-lg transition-colors duration-200 flex items-center space-x-2 w-full my-2"
                                     onClick={() => {}}
                                 >
                                     {' '}

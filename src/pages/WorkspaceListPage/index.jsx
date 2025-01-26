@@ -9,6 +9,7 @@ import {
     fetchWorkspaces,
     setActiveWorkspace,
 } from '../../store/slices/workspaceSlice.js'
+import { useNavigate } from 'react-router-dom'
 
 const WorkspaceListPage = () => {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
@@ -19,6 +20,7 @@ const WorkspaceListPage = () => {
     const { workspaces } = useSelector((state) => state.workspace)
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleEdit = (workspace) => {
         console.log(workspace.name)

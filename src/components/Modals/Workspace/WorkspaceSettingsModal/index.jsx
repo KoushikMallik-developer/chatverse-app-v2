@@ -5,6 +5,7 @@ import {
     removeWorkspace,
     updateWorkspace,
 } from '../../../../store/slices/workspaceSlice.js'
+import { useNavigate } from 'react-router-dom'
 
 const ConfirmationModal = ({
     isOpen,
@@ -60,6 +61,7 @@ const WorkspaceSettingsModal = ({
     const { user } = useSelector((state) => state.auth)
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         setName(currentWorkspace.name)
@@ -86,6 +88,7 @@ const WorkspaceSettingsModal = ({
         setShowDeleteConfirmation(false)
         dispatch(removeWorkspace({ workspaceId: currentWorkspace._id }))
         onClose()
+        navigate('/workspaces')
     }
 
     const handleLeaveWorkspace = () => {
