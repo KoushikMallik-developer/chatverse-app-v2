@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import SummaryApi from '../../utils/summary_api.js'
 import Axios from '../../utils/axios.js'
 import { AxiosToastError } from '../../utils/axios_toast_error_handler.js'
+import { clearSocketListeners } from './chatSlice.js'
 
 // Async thunk for registration
 export const registerUser = createAsyncThunk(
@@ -164,6 +165,7 @@ const authSlice = createSlice({
             state.isLoggedIn = false
             localStorage.removeItem('access_token')
             localStorage.removeItem('refresh_token')
+            clearSocketListeners()
         },
         resetAuthState: (state) => {
             state.message = null

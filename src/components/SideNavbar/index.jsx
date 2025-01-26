@@ -58,12 +58,6 @@ const SidebarNavigation = ({
     }
 
     useEffect(() => {
-        for (const channel of channels) {
-            dispatch(joinChannel({ user: user, channelId: channel?._id }))
-        }
-    }, [channels, dispatch, user])
-
-    useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
                 setIsMobileMenuOpen(false)

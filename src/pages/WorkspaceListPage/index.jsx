@@ -10,17 +10,17 @@ import {
     setActiveWorkspace,
 } from '../../store/slices/workspaceSlice.js'
 import { useNavigate } from 'react-router-dom'
+import { joinChannel } from '../../store/slices/chatSlice.js'
 
 const WorkspaceListPage = () => {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
-    const { token } = useSelector((state) => state.auth)
+    const { token, user } = useSelector((state) => state.auth)
     const { workspaces } = useSelector((state) => state.workspace)
 
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const handleEdit = (workspace) => {
         console.log(workspace.name)
@@ -37,6 +37,18 @@ const WorkspaceListPage = () => {
         dispatch(getUserDetails())
         dispatch(fetchWorkspaces())
     }, [token, dispatch])
+
+    useEffect(() => {
+        for (const workspace of workspaces) {
+            workspace.channels
+                .filter((channel) => channel.members.includes(user._id))
+                .map((channel) =>
+                    dispatch(
+                        joinChannel({ user: user, channelId: channel?._id })
+                    )
+                )
+        }
+    }, [workspaces, dispatch, user])
 
     return (
         <div className="max-w-7xl mx-auto">
