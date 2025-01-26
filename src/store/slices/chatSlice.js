@@ -4,6 +4,7 @@ import Axios from '../../utils/axios'
 import SummaryApi from '../../utils/summary_api'
 import { AxiosToastError } from '../../utils/axios_toast_error_handler'
 import toast from 'react-hot-toast'
+import { playMessageNotificationSound } from '../../utils/notification_sound.js'
 
 const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:8000')
 
@@ -190,6 +191,7 @@ export const initializeSocketListeners = (dispatch) => {
     socket.on('notification', (notification) => {
         console.log(notification)
         dispatch(addNotification(notification))
+        playMessageNotificationSound()
     })
 }
 export const clearSocketListeners = () => {
