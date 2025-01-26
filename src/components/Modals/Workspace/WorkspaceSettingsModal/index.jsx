@@ -1,4 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+    removeMemberFromWorkspace,
+    removeWorkspace,
+    updateWorkspace,
+} from '../../../../store/slices/workspaceSlice.js'
 
 const ConfirmationModal = ({
     isOpen,
@@ -42,61 +48,59 @@ const ConfirmationModal = ({
 const WorkspaceSettingsModal = ({
     isOpen,
     onClose,
-    workspace,
-    isOwner,
     setIsAddMemberToWorkspaceModalOpen,
 }) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
     const [showLeaveConfirmation, setShowLeaveConfirmation] = useState(false)
-    const [settings, setSettings] = useState({
-        name: workspace?.name || '',
-        description: workspace?.description || '',
-    })
-    const [members] = useState([
-        {
-            id: 1,
-            name: 'Sarah Wilson',
-            email: 'sarah@example.com',
-            role: 'Owner',
-        },
-        {
-            id: 2,
-            name: 'Mike Johnson',
-            email: 'mike@example.com',
-            role: 'Member',
-        },
-        {
-            id: 3,
-            name: 'Alex Thompson',
-            email: 'alex@example.com',
-            role: 'Member',
-        },
-    ])
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
+    const [isOwner, setIsOwner] = useState(false)
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target
-        setSettings((prev) => ({ ...prev, [name]: value }))
-    }
+    const { currentWorkspace } = useSelector((state) => state.workspace)
+    const { user } = useSelector((state) => state.auth)
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        setName(currentWorkspace.name)
+        setDescription(currentWorkspace.description)
+        if (currentWorkspace.owner === user._id) {
+            setIsOwner(true)
+        }
+    }, [currentWorkspace._id])
 
     const handleSave = () => {
-        console.log('Saving workspace settings:', settings)
+        dispatch(
+            updateWorkspace({
+                workspaceData: {
+                    id: currentWorkspace._id,
+                    name: name,
+                    description: description,
+                },
+            })
+        )
         onClose()
     }
 
     const handleDeleteWorkspace = () => {
-        console.log('Deleting workspace')
         setShowDeleteConfirmation(false)
+        dispatch(removeWorkspace({ workspaceId: currentWorkspace._id }))
         onClose()
     }
 
     const handleLeaveWorkspace = () => {
-        console.log('Leaving workspace')
+        handleRemoveMember(user._id)
         setShowLeaveConfirmation(false)
         onClose()
     }
 
     const handleRemoveMember = (memberId) => {
-        console.log('Removing member:', memberId)
+        dispatch(
+            removeMemberFromWorkspace({
+                workspaceId: currentWorkspace._id,
+                members: [memberId],
+            })
+        )
     }
 
     if (!isOpen) return null
@@ -146,8 +150,10 @@ const WorkspaceSettingsModal = ({
                                         <input
                                             type="text"
                                             name="name"
-                                            value={settings.name}
-                                            onChange={handleInputChange}
+                                            value={name}
+                                            onChange={(e) =>
+                                                setName(e.target.value)
+                                            }
                                             className="w-full px-3 sm:px-4 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:border-blue-500 text-sm sm:text-base"
                                         />
                                     </div>
@@ -157,8 +163,10 @@ const WorkspaceSettingsModal = ({
                                         </label>
                                         <textarea
                                             name="description"
-                                            value={settings.description}
-                                            onChange={handleInputChange}
+                                            value={description}
+                                            onChange={(e) =>
+                                                setDescription(e.target.value)
+                                            }
                                             rows="3"
                                             className="w-full px-3 sm:px-4 py-2 bg-neutral-700 border border-neutral-600 rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:border-blue-500 resize-none text-sm sm:text-base"
                                         />
@@ -184,7 +192,7 @@ const WorkspaceSettingsModal = ({
                                     </button>
                                 </div>
                                 <div className="space-y-2">
-                                    {members.map((member) => (
+                                    {currentWorkspace.members.map((member) => (
                                         <div
                                             key={member.id}
                                             className="flex items-center justify-between p-2 sm:p-3 bg-neutral-700 rounded-lg flex-wrap sm:flex-nowrap gap-2"
@@ -213,7 +221,7 @@ const WorkspaceSettingsModal = ({
                                                         <button
                                                             onClick={() =>
                                                                 handleRemoveMember(
-                                                                    member.id
+                                                                    member._id
                                                                 )
                                                             }
                                                             className="text-red-400 hover:text-red-300 transition-colors text-sm sm:text-base"

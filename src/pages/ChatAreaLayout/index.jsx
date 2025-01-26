@@ -91,8 +91,6 @@ const ChatArea = () => {
                 <WorkspaceSettingsModal
                     onClose={() => setIsWorkspaceSettingsModalOpen(false)}
                     isOpen={isWorkspaceSettingsModalOpen}
-                    isOwner={true}
-                    workspace={workspace}
                     setIsAddMemberToWorkspaceModalOpen={
                         setIsAddMemberToWorkspaceModalOpen
                     }

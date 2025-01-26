@@ -111,7 +111,7 @@ const SidebarNavigation = ({
                         <NavigationItem icon={Workflow} label="Workspaces">
                             {workspaces.map((workspace) => (
                                 <button
-                                    className={`text-white hover:bg-neutral-700 px-4 py-2 rounded-lg transition-colors duration-200 ${
+                                    className={`text-white hover:bg-neutral-700 px-4 py-2 rounded-lg transition-colors duration-200 w-full text-left ${
                                         workspace._id === currentWorkspace?._id
                                             ? 'bg-neutral-700'
                                             : ''
@@ -130,7 +130,7 @@ const SidebarNavigation = ({
                         <NavigationItem icon={Hash} label="Channels">
                             <div>
                                 <button
-                                    className="text-white font-bold hover:bg-neutral-700 px-4 py-2 rounded-lg transition-colors duration-200 flex items-center space-x-2 w-full"
+                                    className="text-white font-sm bg-neutral-900 hover:bg-neutral-600 p-2 rounded-lg transition-colors duration-200 flex items-center space-x-2 w-full"
                                     onClick={() => {
                                         setShowCreateChannelModal(true)
                                     }}
@@ -165,7 +165,7 @@ const SidebarNavigation = ({
                         >
                             <div>
                                 <button
-                                    className="text-white font-bold hover:bg-neutral-700 px-4 py-2 rounded-lg transition-colors duration-200 flex items-center space-x-2 w-full"
+                                    className="text-white font-sm bg-neutral-900 hover:bg-neutral-600 p-2 rounded-lg transition-colors duration-200 flex items-center space-x-2 w-full"
                                     onClick={() => {}}
                                 >
                                     {' '}

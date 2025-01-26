@@ -106,7 +106,7 @@ export const createWorkspace = createAsyncThunk(
 // Async thunk for adding a member to workspace
 export const addMemberToWorkspace = createAsyncThunk(
     'workspace/addMemberToWorkspace',
-    async ({ userData }, thunkAPI) => {
+    async (userData, thunkAPI) => {
         try {
             const payload = {
                 members: userData['members'],
@@ -133,7 +133,7 @@ export const addMemberToWorkspace = createAsyncThunk(
 // Async thunk for removing a member from workspace
 export const removeMemberFromWorkspace = createAsyncThunk(
     'workspace/removeMemberFromWorkspace',
-    async ({ userData }, thunkAPI) => {
+    async (userData, thunkAPI) => {
         try {
             const payload = {
                 members: userData['members'],
