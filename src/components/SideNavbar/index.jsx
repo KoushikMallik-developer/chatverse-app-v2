@@ -16,6 +16,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setActiveWorkspace } from '../../store/slices/workspaceSlice.js'
 import { setActiveChannel } from '../../store/slices/channelSlice.js'
 import CreateChannelModal from '../Modals/Channel/CreateChannelModal/index.jsx'
+import NameToAvatar from '../../utils/name_to_avatar.jsx'
+import NewDMModal from '../Modals/DM/NewDMModal/index.jsx'
+import {
+    joinChannel,
+    leaveChannel,
+    resetNotifications,
+} from '../../store/slices/chatSlice.js'
 
 const SidebarNavigation = ({
     isMobileMenuOpen,
@@ -25,6 +32,7 @@ const SidebarNavigation = ({
     const sidebarRef = useRef(null)
 
     const [showCreateChannelModal, setShowCreateChannelModal] = useState(false)
+    const [showNewDMModal, setShowNewDMModal] = useState(false)
 
     const { workspaces, currentWorkspace } = useSelector(
         (state) => state.workspace
@@ -32,6 +40,7 @@ const SidebarNavigation = ({
     const { channels, currentChannel } = useSelector((state) => state.channel)
     const { dms } = useSelector((state) => state.dm)
     const { user } = useSelector((state) => state.auth)
+    const { onlineUsers, notifications } = useSelector((state) => state.chat)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -43,9 +52,16 @@ const SidebarNavigation = ({
     }
 
     const handleSwitchChannel = (channel) => {
+        dispatch(resetNotifications({ channelId: channel._id }))
         dispatch(setActiveChannel(channel))
         setIsMobileMenuOpen(false)
     }
+
+    useEffect(() => {
+        for (const channel of channels) {
+            dispatch(joinChannel({ user: user, channelId: channel?._id }))
+        }
+    }, [channels, dispatch, user])
 
     useEffect(() => {
         const handleResize = () => {
@@ -153,7 +169,14 @@ const SidebarNavigation = ({
                                             handleSwitchChannel(channel)
                                         }}
                                     >
-                                        # {channel.name}
+                                        <div className="flex justify-between items-center">
+                                            <span># {channel.name}</span>
+                                            {notifications[channel._id] > 0 && (
+                                                <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1">
+                                                    {notifications[channel._id]}
+                                                </span>
+                                            )}
+                                        </div>
                                     </button>
                                 ))}
                         </NavigationItem>
@@ -166,7 +189,7 @@ const SidebarNavigation = ({
                             <div>
                                 <button
                                     className="text-white font-sm bg-neutral-900 hover:bg-neutral-600 p-2 rounded-lg transition-colors duration-200 flex items-center space-x-2 w-full my-2"
-                                    onClick={() => {}}
+                                    onClick={() => setShowNewDMModal(true)}
                                 >
                                     {' '}
                                     <Plus /> <span>New Message</span>
@@ -184,9 +207,44 @@ const SidebarNavigation = ({
                                         handleSwitchChannel(channel)
                                     }}
                                 >
-                                    {channel.members[0]._id !== user._id
-                                        ? channel.members[0].name
-                                        : channel.members[1].name}
+                                    <div className="flex justify-between items-center">
+                                        <div className="flex items-center space-x-3">
+                                            <div className="relative">
+                                                <NameToAvatar
+                                                    name={
+                                                        channel.members[0]
+                                                            ._id !== user._id
+                                                            ? channel.members[0]
+                                                                  .name
+                                                            : channel.members[1]
+                                                                  .name
+                                                    }
+                                                    size={30}
+                                                />
+                                                {onlineUsers.includes(
+                                                    channel.members[0]._id ===
+                                                        user._id
+                                                        ? channel.members[1]._id
+                                                        : channel.members[0]._id
+                                                ) ? (
+                                                    <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-neutral-800 rounded-full"></div>
+                                                ) : (
+                                                    <div className="absolute bottom-0 right-0 w-3 h-3 bg-gray-500 border-2 border-neutral-800 rounded-full"></div>
+                                                )}
+                                            </div>
+                                            <span>
+                                                {channel.members[0]._id !==
+                                                user._id
+                                                    ? channel.members[0].name
+                                                    : channel.members[1].name}
+                                            </span>
+                                        </div>
+                                        {notifications[channel._id] > 0 && (
+                                            <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1">
+                                                {notifications[channel._id]}
+                                            </span>
+                                        )}
+                                    </div>
                                 </button>
                             ))}
                         </NavigationItem>
@@ -228,6 +286,12 @@ const SidebarNavigation = ({
                 <CreateChannelModal
                     isOpen={showCreateChannelModal}
                     onClose={() => setShowCreateChannelModal(false)}
+                />
+            )}
+            {showNewDMModal && (
+                <NewDMModal
+                    isOpen={showNewDMModal}
+                    onClose={() => setShowNewDMModal(false)}
                 />
             )}
         </>

@@ -35,13 +35,6 @@ const ChatArea = () => {
     const handleBackToChatClick = () => {
         navigate(`/workspace/${currentWorkspace._id}`)
     }
-    const workspace = {
-        name: 'Tech Company',
-        acronym: 'TC',
-        members: 25,
-        channels: 12,
-        messages: 156,
-    }
 
     useEffect(() => {
         dispatch(fetchChannels({ workspaceId: currentWorkspace._id }))

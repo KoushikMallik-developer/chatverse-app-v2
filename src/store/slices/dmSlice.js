@@ -30,7 +30,7 @@ export const getDMs = createAsyncThunk(
 // Async thunk for creating a DM
 export const createDM = createAsyncThunk(
     'dm/createDM',
-    async ({ dmData }, thunkAPI) => {
+    async (dmData, thunkAPI) => {
         try {
             const payload = {
                 workspaceId: dmData['workspaceId'],

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Bold, Code, Image, Italic, Link, Send, Smile, X } from 'lucide-react'
+import { useDispatch, useSelector } from 'react-redux'
+import { sendMessage } from '../../../store/slices/chatSlice.js'
 
 const MessageInput = () => {
     const [message, setMessage] = useState('')
@@ -7,6 +9,11 @@ const MessageInput = () => {
     const [showEmojiPicker, setShowEmojiPicker] = useState(false)
     const textareaRef = useRef(null)
     const fileInputRef = useRef(null)
+
+    const { user } = useSelector((state) => state.auth)
+    const { currentChannel } = useSelector((state) => state.channel)
+
+    const dispatch = useDispatch()
 
     const emojiList = [
         '😊',
@@ -108,6 +115,13 @@ const MessageInput = () => {
     const handleSend = () => {
         if (message.trim() || imageFiles.length > 0) {
             console.log('Sending message:', message, 'Images:', imageFiles)
+            dispatch(
+                sendMessage({
+                    senderId: user._id,
+                    channelId: currentChannel._id,
+                    content: message,
+                })
+            )
             setMessage('')
             setImageFiles([])
             if (textareaRef.current) {

@@ -10,7 +10,7 @@ import {
     REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
-// import chatReducer from './slices/chatSlice'
+import chatReducer from './slices/chatSlice'
 import authReducer from './slices/authSlice'
 import workspaceReducer from './slices/workspaceSlice'
 import channelReducer from './slices/channelSlice'
@@ -18,7 +18,7 @@ import dmReducer from './slices/dmSlice'
 
 // Combine reducers
 const rootReducer = combineReducers({
-    // chat: chatReducer,
+    chat: chatReducer,
     auth: authReducer,
     workspace: workspaceReducer,
     channel: channelReducer,

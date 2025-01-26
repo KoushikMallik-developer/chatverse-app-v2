@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
 import './App.css'
 import { Toaster } from 'react-hot-toast'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import HomePage from './pages/Homepage/index.jsx'
 import Auth from './pages/Auth/index.jsx'
 import { FeaturesPage } from './pages/Features/index.jsx'
@@ -13,8 +13,42 @@ import ProtectedRoute from './pages/ProtectedRoute/index.jsx'
 import WorkspaceListPage from './pages/WorkspaceListPage/index.jsx'
 import ChatArea from './pages/ChatAreaLayout/index.jsx'
 import Profile from './pages/Profile/index.jsx'
+import { useDispatch, useSelector } from 'react-redux'
+import { resetMessages } from './store/slices/authSlice.js'
+import {
+    clearSocketListeners,
+    initializeSocketListeners,
+    resetSearchResult,
+    setUserOnline,
+} from './store/slices/chatSlice.js'
+import { cleanActiveChannel } from './store/slices/channelSlice.js'
 
 function App() {
+    const dispatch = useDispatch()
+    const location = useLocation()
+    const { user } = useSelector((state) => state.auth)
+
+    useEffect(() => {
+        dispatch(resetMessages()) // Reset messages on route change
+        dispatch(resetSearchResult())
+        dispatch(cleanActiveChannel())
+    }, [location.pathname, dispatch]) // Trigger when route changes
+
+    useEffect(() => {
+        console.log('initilaizing socket listeners')
+        initializeSocketListeners(dispatch)
+        return () => {
+            console.log('clearing socket listeners')
+            clearSocketListeners()
+        }
+    }, [])
+
+    useEffect(() => {
+        if (user?._id) {
+            dispatch(setUserOnline(user._id))
+        }
+    }, [user])
+
     return (
         <>
             <Toaster

@@ -1,18 +1,16 @@
 import React, { useState } from 'react'
 import { Search } from 'lucide-react'
+import { useSelector } from 'react-redux'
+import NameToAvatar from '../../../utils/name_to_avatar.jsx'
 
 const DMChatHeader = ({
     isMobileMenuOpen,
     setIsMobileMenuOpen,
     menuButtonRef,
 }) => {
-    const [searchQuery, setSearchQuery] = useState('')
-
-    const userDetails = {
-        name: 'Jane Smith',
-        status: 'Online',
-        avatar: '/api/placeholder/32/32',
-    }
+    const { user } = useSelector((state) => state.auth)
+    const { currentChannel } = useSelector((state) => state.channel)
+    const { onlineUsers } = useSelector((state) => state.chat)
 
     return (
         <header className="bg-neutral-800 border-b border-neutral-700 p-4">
@@ -40,17 +38,29 @@ const DMChatHeader = ({
                         </button>
                     )}
                     <div className="relative">
-                        <img
-                            id="user_image"
-                            src={userDetails.avatar}
-                            alt="User Avatar"
-                            className="w-8 h-8 rounded-full"
+                        <NameToAvatar
+                            name={
+                                currentChannel.members[0]._id !== user._id
+                                    ? currentChannel.members[0].name
+                                    : currentChannel.members[1].name
+                            }
+                            size={30}
                         />
-                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-neutral-800 rounded-full"></div>
+                        {onlineUsers.includes(
+                            currentChannel.members[0]._id === user._id
+                                ? currentChannel.members[1]._id
+                                : currentChannel.members[0]._id
+                        ) ? (
+                            <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-neutral-800 rounded-full"></div>
+                        ) : (
+                            <div className="absolute bottom-0 right-0 w-3 h-3 bg-gray-500 border-2 border-neutral-800 rounded-full"></div>
+                        )}
                     </div>
                     <div>
                         <h1 className="text-lg font-semibold text-white">
-                            {userDetails.name}
+                            {currentChannel.members[0]._id !== user._id
+                                ? currentChannel.members[0].name
+                                : currentChannel.members[1].name}
                         </h1>
                     </div>
                 </div>

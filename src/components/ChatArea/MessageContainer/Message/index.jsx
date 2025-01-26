@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { SmilePlus } from 'lucide-react'
+import NameToAvatar from '../../../../utils/name_to_avatar.jsx'
+import { format_timestamp } from '../../../../utils/format_timestamp.js'
 
-const Message = ({ user, time, content, reactions, images }) => {
+const Message = ({ message }) => {
     const [showReactionPicker, setShowReactionPicker] = useState(false)
     const reactionsList = ['👍', '❤️', '😊', '🎉', '🚀', '👏', '🔥']
 
@@ -36,40 +38,40 @@ const Message = ({ user, time, content, reactions, images }) => {
 
     return (
         <div className="flex space-x-4">
-            <img
-                src="/api/placeholder/40/40"
-                alt={`${user} Avatar`}
-                className="w-10 h-10 rounded-full flex-shrink-0"
-            />
+            <NameToAvatar name={message.sender.name} size={30} />
             <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2">
-                    <span className="font-medium text-white">{user}</span>
-                    <span className="text-sm text-neutral-400">{time}</span>
+                    <span className="font-medium text-white">
+                        {message.sender.name}
+                    </span>
+                    <span className="text-sm text-neutral-400">
+                        {format_timestamp(message.createdAt)}
+                    </span>
                 </div>
                 <div className="mt-1 text-neutral-300 break-words">
-                    {renderFormattedContent(content)}
+                    {renderFormattedContent(message.content)}
                 </div>
-                {images && images.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-2">
-                        {images.map((img, index) => (
-                            <img
-                                key={index}
-                                src={img}
-                                alt="Message attachment"
-                                className="max-w-xs rounded-lg"
-                            />
-                        ))}
-                    </div>
-                )}
-                {reactions && reactions.length > 0 && (
+                {/*{images && images.length > 0 && (*/}
+                {/*    <div className="mt-2 flex flex-wrap gap-2">*/}
+                {/*        {images.map((img, index) => (*/}
+                {/*            <img*/}
+                {/*                key={index}*/}
+                {/*                src={img}*/}
+                {/*                alt="Message attachment"*/}
+                {/*                className="max-w-xs rounded-lg"*/}
+                {/*            />*/}
+                {/*        ))}*/}
+                {/*    </div>*/}
+                {/*)}*/}
+                {message.reactions && message.reactions.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-2">
                         {reactions.map((reaction, index) => (
                             <button
                                 key={index}
                                 className="bg-neutral-800 text-neutral-300 px-2 py-1 rounded-full text-sm flex items-center space-x-1 hover:bg-neutral-700"
                             >
-                                <span>{reaction.emoji}</span>
-                                <span>{reaction.count}</span>
+                                <span>{message.reaction.emoji}</span>
+                                <span>{message.reaction.count}</span>
                             </button>
                         ))}
                     </div>

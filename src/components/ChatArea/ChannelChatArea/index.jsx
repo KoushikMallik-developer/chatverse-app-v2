@@ -30,22 +30,12 @@ const ChannelChatArea = ({
     setIsMobileMenuOpen,
     menuButtonRef,
 }) => {
-    const channelData = {
-        name: 'general',
-        description:
-            "This is the one channel that will always include everyone. It's a great spot for announcements and team-wide conversations.",
-        createdBy: 'John Doe',
-        memberCount: 25,
-        members: Array(25).fill(null),
-    }
-
     return (
         <div className="h-screen bg-neutral-900 flex flex-col">
             <ChatHeader
                 isMobileMenuOpen={isMobileMenuOpen}
                 setIsMobileMenuOpen={setIsMobileMenuOpen}
                 menuButtonRef={menuButtonRef}
-                channelData={channelData}
             />
             <MessageContainer />
             <MessageInput />
